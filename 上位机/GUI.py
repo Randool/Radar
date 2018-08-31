@@ -37,7 +37,6 @@ class RaderCanvas(Contral, FigureCanvas):
 
     def start_measure(self, freq=150):
         """ 连接STC并启动定时器 """
-
         self.serial.write(b"\xee")  # 待改进【】
         self.timer.timeout.connect(self.update_figure)
         self.timer.start(freq)

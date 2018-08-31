@@ -98,7 +98,7 @@ class Contral:
                 break
         try:
             self.serial = serial.Serial(self.port, self.BAUD)
-            print("按排上了")
+            print("安排上了")
         except Exception as e:
             print(e)
 
