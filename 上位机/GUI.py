@@ -107,13 +107,13 @@ class AppWindow(QtWidgets.QMainWindow):
 
     def start_func(self):
         if self.rc.serial is None:
-            QtWidgets.QMessageBox.about(self, "Prompt", "未连接！\n‘Ctrl+A’连接STC")
+            QtWidgets.QMessageBox.about(self, "Prompt", "未连接！\n请检查端口连接，并按‘Ctrl+A’连接STC。")
             return
         self.rc.start_measure()
 
     def pause_func(self):
         if self.rc.serial is None:
-            QtWidgets.QMessageBox.about(self, "Prompt", "未连接！\n")
+            QtWidgets.QMessageBox.about(self, "Prompt", "未连接STC板，无法暂停。")
             return
         self.rc.pause_measure()
 
@@ -123,7 +123,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.close()
 
     def help_msg(self):
-        QtWidgets.QMessageBox.about(self, "Help", "Undefined!")
+        QtWidgets.QMessageBox.about(self, "Help", "1.将C代码烧录进STC\n2.Ctrl+a连接STC\n3.Ctrl+s开始测量\n4.Ctrl+p暂停测量\n5.Ctrl+q退出程序")
 
 
 if __name__ == "__main__":
