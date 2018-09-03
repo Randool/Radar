@@ -356,11 +356,6 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>STC15F2K60S2.H</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\STC15F2K60S2.H</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>

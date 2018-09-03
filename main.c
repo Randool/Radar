@@ -1,6 +1,7 @@
 #include "support.h"
-#include "serial.h"
+#include "store.h"
 #include "servo.h"
+#include "serial.h"
 
 #define FOCS 11059200L
 #define BAUD 9600
@@ -9,9 +10,6 @@
 sbit sLED = P3^3;
 sbit echo = P1^0;
 sbit trig = P1^1;
-/*
-	待补充：舵机引脚
-*/
 
 uint16 distance;
 uint8 recv_buff;
@@ -42,6 +40,8 @@ void init() {
 	TR1 = 1;
 	ES = 1;
 	EA = 1;
+	
+	store_init();	// 存储设备的初始化
 }
 
 void getDistance() {
@@ -76,6 +76,13 @@ void main() {
 		getDistance();
 		Duang();
 		send_data(0x11, distance);
+		
+		// 记录距离，由于distance为16位，需要传输两次
+		write_addr(pointer++, distance >> 8);
+		write_addr(pointer++, distance & 0xff);
+		if (pointer >= (direction << 1))
+			pointer = 0;
+
 		step();
 	}
 }

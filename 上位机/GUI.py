@@ -7,7 +7,7 @@ from matplotlib import animation
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PyQt5 import QtCore, QtWidgets
-from contral import Contral
+from contral import *
 
 
 class RaderCanvas(Contral, FigureCanvas):
@@ -52,10 +52,10 @@ class RaderCanvas(Contral, FigureCanvas):
         self.serial.write(self.ack)
         self.timer.stop()
 
-    def update_figure(self, dotnum=48, step=np.pi / 24):
+    def update_figure(self, dotnum=directions*2, step=np.pi/directions):
         """ 更新作图 """
         r = self.get_distance()
-        print(f"r = {r}\r")
+        print(f"\rr = {r}m")
         if len(self.rQueue) == dotnum:
             self.rQueue.pop(0)
             self.thetaQueue.pop(0)
@@ -69,25 +69,6 @@ class RaderCanvas(Contral, FigureCanvas):
         self.axes.set_rmax(4.3)
         self.axes.set_rlabel_position(0)
         self.draw()
-    
-    def update_figure_alpha(self, dotnum=48, step=np.pi / 24):
-        """ 加速更新作图 
-        https://bastibe.de/2013-05-30-speeding-up-matplotlib.html
-        """
-        r = self.get_distance()
-        print(f"r = {r}\r")
-        if len(self.rQueue) == dotnum:
-            self.rQueue.pop(0)
-            self.thetaQueue.pop(0)
-        self.rQueue.append(r)
-        self.buff += step
-        self.thetaQueue.append(self.buff)
-
-        self.__line__.set_ydata(self.thetaQueue)
-        self.axes.draw_artist(self.axes.patch)
-        self.axes.draw_artist(self.__line__)
-        self.fig.canvas.update()
-        self.fig.canvas.flush_events()
 
 
 class AppWindow(QtWidgets.QMainWindow):
