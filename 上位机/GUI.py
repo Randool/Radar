@@ -32,6 +32,12 @@ class RaderCanvas(Contral, FigureCanvas):
         self.thetaQueue = []
         self.buff = 0
 
+        # 初始化图像
+        self.axes.set_rmax(4.3)
+        self.axes.set_rticks([1, 2, 3, 4])
+        self.axes.set_rlabel_position(0)
+        # self.__line__, = self.axes.plot(self.thetaQueue, self.rQueue)
+
         # 计时器
         self.timer = QtCore.QTimer(self)
 
@@ -44,7 +50,7 @@ class RaderCanvas(Contral, FigureCanvas):
     def pause_measure(self):
         """ 暂停定时器 """
         self.serial.write(self.ack)
-        self.timer.disconnect()
+        self.timer.stop()
 
     def update_figure(self, dotnum=48, step=np.pi / 24):
         """ 更新作图 """
@@ -59,10 +65,29 @@ class RaderCanvas(Contral, FigureCanvas):
 
         self.axes.cla()
         self.axes.plot(self.thetaQueue, self.rQueue)
-        self.axes.set_rmax(4.3)
         self.axes.set_rticks([1, 2, 3, 4])
+        self.axes.set_rmax(4.3)
         self.axes.set_rlabel_position(0)
         self.draw()
+    
+    def update_figure_alpha(self, dotnum=48, step=np.pi / 24):
+        """ 加速更新作图 
+        https://bastibe.de/2013-05-30-speeding-up-matplotlib.html
+        """
+        r = self.get_distance()
+        print(f"r = {r}\r")
+        if len(self.rQueue) == dotnum:
+            self.rQueue.pop(0)
+            self.thetaQueue.pop(0)
+        self.rQueue.append(r)
+        self.buff += step
+        self.thetaQueue.append(self.buff)
+
+        self.__line__.set_ydata(self.thetaQueue)
+        self.axes.draw_artist(self.axes.patch)
+        self.axes.draw_artist(self.__line__)
+        self.fig.canvas.update()
+        self.fig.canvas.flush_events()
 
 
 class AppWindow(QtWidgets.QMainWindow):
