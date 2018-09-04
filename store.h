@@ -14,10 +14,7 @@ void store_init() {
 	SDA = 1;
 	delay_4us();
 	
-	// 数据初始化
-	pointer = 0;
-	write_data = 0;
-	read_data = 0;
+	pointer = 0x00;
 }
 
 void start() {		// 主机启动信号
@@ -38,7 +35,7 @@ void stop()	{		// 停止信号
 	delay_4us();
 }
 
-void respons() {	// 从机应答信号
+void response() {	// 从机应答信号
 	uint8 i = 0;
 	SCL = 1;
 	delay_4us();
@@ -89,24 +86,24 @@ uint8 readbyte() {	// 读一个字节数据
 void write_addr(uint8 addr, uint8 date) {	// 将data写到addr中
 	start();
 	writebyte(0xa0);	// 选择24C16
-	respons();
+	response();
 	writebyte(addr);	// 选择地址
-	respons();
+	response();
 	writebyte(date);	// 写数据
-	respons();
+	response();
 	stop();
 }
 
 uint8 read_addr(uint8 addr) { // 从addr读取data
 	uint8 date;
 	start();
-	writebyte(0xa0);	// 选择24C16
-	respons();
+	writebyte(0xa0);	// 选择第0块24C16
+	response();
 	writebyte(addr);	// 选择地址
-	respons();	
+	response();	
 	start();
 	writebyte(0xa1);	// 写数据
-	respons();
+	response();
 	date = readbyte();
 	stop();
 	return date;

@@ -15,7 +15,7 @@ uint16 distance;
 uint8 recv_buff;
 
 
-void init() {
+void setup() {
 	// 舵机
 	P4M1 = 0x00, P4M0 = 0xff;
 	P4 = 0;
@@ -59,19 +59,7 @@ void getDistance() {
 	TR1 = 1;
 }
 
-void Uart1() interrupt 4 using 1 {
-	if (RI) {
-		recv_buff = SBUF;
-		RI = 0;
-	}
-	if (TI) {
-		busy = 0;
-		TI = 0;
-	}
-}
-
-void main() {
-	init();
+void loop() {
 	while (1) {
 		getDistance();
 		Duang();
@@ -80,9 +68,25 @@ void main() {
 		// 记录距离，由于distance为16位，需要传输两次
 		write_addr(pointer++, distance >> 8);
 		write_addr(pointer++, distance & 0xff);
-		if (pointer >= (direction << 1))
-			pointer = 0;
+		if (pointer >= 2*direction)
+			pointer = 0x00;
 
 		step();
+	}
+}
+
+void main() {
+	setup();
+	loop();
+}
+
+void Uart1() interrupt 4 using 1 {
+	if (RI) {
+		recv_buff = SBUF;
+		RI = 0;
+	}
+	if (TI) {
+		busy = 0;
+		TI = 0;
 	}
 }

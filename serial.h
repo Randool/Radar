@@ -13,14 +13,15 @@ void send_byte(uint8 byte) {
  */
 void send_data(uint8 ack, uint16 Data) {
 	// 上位机请求读取存储
-	uint8 p = 0;
 	if ( SBUF == READ ) {
+		uint8 p = 0;
 		while (p < direction) {
 			send_byte(read_addr(p++));
 			send_byte(read_addr(p++));
 		}
 	}
-	do {
+	
+	do {  // 等待~ack
 		send_byte(ack);
 		delay( wait_ack );
 	} while ( (SBUF^(~ack)) );

@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  09/03/2018 21:41:00 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  09/04/2018 14:41:04 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -9,6 +9,7 @@ line level    source
 
    1          #include "support.h"
    2          #include "store.h"
+*** WARNING C206 IN LINE 89 OF store.h: 'respons': missing function-prototype
    3          #include "servo.h"
    4          #include "serial.h"
    5          
@@ -24,7 +25,7 @@ line level    source
   15          uint8 recv_buff;
   16          
   17          
-  18          void init() {
+  18          void setup() {
   19   1              // 舵机
   20   1              P4M1 = 0x00, P4M0 = 0xff;
   21   1              P4 = 0;
@@ -61,53 +62,57 @@ line level    source
   52   1              TH0 = TL0 = 0;
   53   1              while (!echo);
   54   1              TR0 = 1;
-  55   1              while (echo);
-C51 COMPILER V9.51   MAIN                                                                  09/03/2018 21:41:00 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  09/04/2018 14:41:04 PAGE 2   
 
+  55   1              while (echo);
   56   1              TR0 = 0;
   57   1              distance = (TH0 * 256 + TL0) * 0.172;
   58   1              if (distance > 4000) distance = 4000;
   59   1              TR1 = 1;
   60   1      }
   61          
-  62          void Uart1() interrupt 4 using 1 {
-  63   1              if (RI) {
-  64   2                      recv_buff = SBUF;
-  65   2                      RI = 0;
-  66   2              }
-  67   1              if (TI) {
-  68   2                      busy = 0;
-  69   2                      TI = 0;
-  70   2              }
-  71   1      }
-  72          
-  73          void main() {
-  74   1              init();
-  75   1              while (1) {
-  76   2                      getDistance();
-  77   2                      Duang();
-  78   2                      send_data(0x11, distance);
-  79   2                      
-  80   2                      // 记录距离，由于distance为16位，需要传输两次
-  81   2                      write_addr(pointer++, distance >> 8);
-  82   2                      write_addr(pointer++, distance & 0xff);
-  83   2                      if (pointer >= (direction << 1))
-  84   2                              pointer = 0;
-  85   2      
-  86   2                      step();
+  62          void loop() {
+  63   1              while (1) {
+  64   2                      getDistance();
+  65   2                      Duang();
+  66   2                      send_data(0x11, distance);
+  67   2                      
+  68   2                      // 记录距离，由于distance为16位，需要传输两次
+  69   2                      write_addr(pointer++, distance >> 8);
+  70   2                      write_addr(pointer++, distance & 0xff);
+  71   2                      if (pointer >= 2*direction)
+  72   2                              pointer = 0x00;
+  73   2      
+  74   2                      step();
+  75   2              }
+  76   1      }
+  77          
+  78          void main() {
+  79   1              setup();
+  80   1              loop();
+  81   1      }
+  82          
+  83          void Uart1() interrupt 4 using 1 {
+  84   1              if (RI) {
+  85   2                      recv_buff = SBUF;
+  86   2                      RI = 0;
   87   2              }
-  88   1      }
+  88   1              if (TI) {
+  89   2                      busy = 0;
+  90   2                      TI = 0;
+  91   2              }
+  92   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    632    ----
+   CODE SIZE        =    655    ----
    CONSTANT SIZE    =     18    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      6       7
+   DATA SIZE        =      6      12
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
