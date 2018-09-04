@@ -63,5 +63,5 @@ class Contral:
             a = self.serial.read(2)
             # print(a)
             distance = (a[0] * 256 + a[1]) / 1000
-            print(f'{i}\t{distance}')
+            print(f'{i+1}\t{distance}')
         self.serial.write(b'\xee')  # 防止陷入等待状态
