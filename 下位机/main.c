@@ -60,18 +60,26 @@ void getDistance() {
 }
 
 void loop() {
+	uint8 i;
 	while (1) {
-		getDistance();
-		Duang();
-		send_data(0x11, distance);
+		// 接收上位机发送的心跳包，若验证失败则暂停工作
+		while (SBUF != ALIVE);
 		
-		// 记录距离，由于distance为16位，需要传输两次
-		write_addr(pointer++, distance >> 8);
-		write_addr(pointer++, distance & 0xff);
-		if (pointer >= 2*direction)
-			pointer = 0x00;
-
-		step(clockwise);
+		// 顺时针旋转
+		for (i = 0; i < direction; ++i) {
+			getDistance();
+			Duang();
+			send_data(distance);
+			
+			/* 记录距离，由于distance为16位，需要传输两次*/
+			write_addr(i<<1, distance >> 8);
+			write_addr((i<<1)+1, distance & 0xff);
+			
+			step(clockwise);
+		}
+		// 旋转复位
+		for (i = 0; i < direction; ++i)
+			step(anticlockwise);
 	}
 }
 

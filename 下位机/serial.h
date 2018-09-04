@@ -1,4 +1,6 @@
-#define READ 0x22
+#define ACK   0x11
+#define READ  0x22
+#define ALIVE 0xee	// 可更换
 
 static bit busy = 1;
 
@@ -11,20 +13,20 @@ void send_byte(uint8 byte) {
 /**
  * 发送距离或者读取存储
  */
-void send_data(uint8 ack, uint16 Data) {
+void send_data(uint16 Data) {
 	// 上位机请求读取存储
 	if ( SBUF == READ ) {
-		uint8 p = 0;
-		while (p < direction) {
-			send_byte(read_addr(p++));
-			send_byte(read_addr(p++));
+		uint8 i;
+		for (i = 0; i < direction; ++i) {
+			send_byte(read_addr(i<<1));
+			send_byte(read_addr((i<<1)+1));
 		}
 	}
 	
-	do {  // 等待~ack
-		send_byte(ack);
+	do {  // 等待上位机验证
+		send_byte(ACK);
 		delay( wait_ack );
-	} while ( (SBUF^(~ack)) );
+	} while ( SBUF^ALIVE );	// SBUF != ALIVE
 	
 	send_byte(Data >> 8);
 	send_byte(Data & 0xff);

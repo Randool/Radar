@@ -14,6 +14,7 @@ class Contral:
         self.READ = b'\x22'
         self.port = None
         self.serial = None
+        self.counter = 0    # 用于和下位机保持计数一致
 
     def connect_STC(self):
         """ 自动扫描端口并连接 """
@@ -35,10 +36,13 @@ class Contral:
 
     def close_STC(self):
         """ 断开与STC的连接 """
+        if self.serial is None:
+            return
         try:
             self.serial.write(self.ack)
             self.serial.close()
             self.serial = None
+            self.port = None
             print("取消安排")
         except Exception as e:
             print(e)
@@ -61,7 +65,6 @@ class Contral:
         self.serial.write(self.READ)
         for i in range(directions):
             a = self.serial.read(2)
-            # print(a)
             distance = (a[0] * 256 + a[1]) / 1000
             print(f'{i+1}\t{distance}')
         self.serial.write(b'\xee')  # 防止陷入等待状态

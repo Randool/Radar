@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  09/04/2018 17:18:03 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  09/04/2018 21:52:38 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53   1              while (!echo);
   54   1              TR0 = 1;
   55   1              while (echo);
-C51 COMPILER V9.51   MAIN                                                                  09/04/2018 17:18:03 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  09/04/2018 21:52:38 PAGE 2   
 
   56   1              TR0 = 0;
   57   1              distance = (TH0 * 256 + TL0) * 0.172;
@@ -71,44 +71,52 @@ line level    source
   60   1      }
   61          
   62          void loop() {
-  63   1              while (1) {
-  64   2                      getDistance();
-  65   2                      Duang();
-  66   2                      send_data(0x11, distance);
+  63   1              uint8 i;
+  64   1              while (1) {
+  65   2                      // 接收上位机发送的心跳包，若验证失败则暂停工作
+  66   2                      while (SBUF != ALIVE);
   67   2                      
-  68   2                      // 记录距离，由于distance为16位，需要传输两次
-  69   2                      write_addr(pointer++, distance >> 8);
-  70   2                      write_addr(pointer++, distance & 0xff);
-  71   2                      if (pointer >= 2*direction)
-  72   2                              pointer = 0x00;
-  73   2      
-  74   2                      step(clockwise);
-  75   2              }
-  76   1      }
-  77          
-  78          void main() {
-  79   1              setup();
-  80   1              loop();
-  81   1      }
-  82          
-  83          void Uart1() interrupt 4 using 1 {
-  84   1              if (RI) {
-  85   2                      recv_buff = SBUF;
-  86   2                      RI = 0;
-  87   2              }
-  88   1              if (TI) {
-  89   2                      busy = 0;
-  90   2                      TI = 0;
-  91   2              }
-  92   1      }
+  68   2                      // 顺时针旋转
+  69   2                      for (i = 0; i < direction; ++i) {
+  70   3                              getDistance();
+  71   3                              Duang();
+  72   3                              send_data(distance);
+  73   3                              
+  74   3                              /* 记录距离，由于distance为16位，需要传输两次*/
+  75   3                              write_addr(i<<1, distance >> 8);
+  76   3                              write_addr((i<<1)+1, distance & 0xff);
+  77   3                              
+  78   3                              step(clockwise);
+  79   3                      }
+  80   2                      // 旋转复位
+  81   2                      for (i = 0; i < direction; ++i)
+  82   2                              step(anticlockwise);
+  83   2              }
+  84   1      }
+  85          
+  86          void main() {
+  87   1              setup();
+  88   1              loop();
+  89   1      }
+  90          
+  91          void Uart1() interrupt 4 using 1 {
+  92   1              if (RI) {
+  93   2                      recv_buff = SBUF;
+  94   2                      RI = 0;
+  95   2              }
+  96   1              if (TI) {
+  97   2                      busy = 0;
+  98   2                      TI = 0;
+  99   2              }
+ 100   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    726    ----
+   CODE SIZE        =    759    ----
    CONSTANT SIZE    =     18    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      6       8
+   DATA SIZE        =      6       9
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1       1
 END OF MODULE INFORMATION.

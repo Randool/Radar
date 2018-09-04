@@ -7,6 +7,9 @@ from PyQt5 import QtCore, QtWidgets
 from contral import Contral, directions
 
 
+step = 2 * np.pi / directions
+
+
 class RaderCanvas(Contral, FigureCanvas):
     """ 用于展示雷达图 """
 
@@ -33,14 +36,13 @@ class RaderCanvas(Contral, FigureCanvas):
         self.axes.set_rmax(4.3)
         self.axes.set_rticks([1, 2, 3, 4])
         self.axes.set_rlabel_position(0)
-        # self.__line__, = self.axes.plot(self.thetaQueue, self.rQueue)
 
         # 计时器
         self.timer = QtCore.QTimer(self)
 
     def start_measure(self, freq=150):
         """ 连接STC并启动定时器 """
-        self.serial.write(b"\xee")  # 待改进【】
+        self.serial.write(b"\xee")
         self.timer.timeout.connect(self.update_figure)
         self.timer.start(freq)
 
@@ -49,11 +51,11 @@ class RaderCanvas(Contral, FigureCanvas):
         self.serial.write(self.ack)
         self.timer.stop()
 
-    def update_figure(self, dotnum=directions*2, step=np.pi/directions):
+    def update_figure(self):
         """ 更新作图 """
         r = self.get_distance()
         print(f"\rr = {r} m")
-        if len(self.rQueue) == dotnum:
+        if len(self.rQueue) == directions:
             self.rQueue.pop(0)
             self.thetaQueue.pop(0)
         self.rQueue.append(r)

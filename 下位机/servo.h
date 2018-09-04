@@ -1,4 +1,4 @@
-#define up (2048 / direction)
+#define TIMES (2048 / direction)
 
 
 sbit s1 = P4^1;
@@ -7,7 +7,7 @@ sbit s3 = P4^3;
 sbit s4 = P4^4;
 
 void step(bit trend) {
-	uint16 i, z = up;
+	uint16 i, z = TIMES;
 	if (trend == clockwise) {
 		for (i = 0; i < z; ++i) {
 			switch (i % 4) {
