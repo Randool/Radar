@@ -8,6 +8,9 @@
 #define direction	32	// 取样方向数，需要为2的倍数
 #define wait_ack	10	// 发送ack的间隔时间
 
+#define clockwise 1
+#define anticlockwise 0
+
 typedef unsigned int uint16;
 typedef unsigned char uint8;
 

@@ -1,4 +1,4 @@
-#include "support.h"
+#include "support.h"	// ÔÓÏî
 #include "store.h"
 #include "servo.h"
 #include "serial.h"
@@ -71,7 +71,7 @@ void loop() {
 		if (pointer >= 2*direction)
 			pointer = 0x00;
 
-		step();
+		step(clockwise);
 	}
 }
 

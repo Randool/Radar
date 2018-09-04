@@ -3,7 +3,7 @@ import sys
 
 from PyQt5 import QtWidgets
 
-from canvas import *
+from canvas import QtCore, RaderCanvas, directions
 
 
 class AppWindow(QtWidgets.QMainWindow):
