@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 09:57:00 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -7,127 +7,164 @@ COMPILER INVOKED BY: F:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
-   1          #include "support.h"    // 杂项
+   1          #include "support.h"
    2          #include "store.h"
    3          #include "servo.h"
    4          #include "serial.h"
    5          
-   6          #define FOCS 11059200L
-   7          #define BAUD 9600
-   8          #define TM   (65536 - FOCS/BAUD/4)
-   9          
-  10          sbit sLED = P3^3;
-  11          sbit echo = P1^0;
-  12          sbit trig = P1^1;
-  13          
-  14          uint16 distance;
-  15          uint8 recv_buff;
+   6          
+   7          #define FOCS 11059200L
+   8          #define BAUD 9600
+   9          #define TM   (65536 - FOCS/BAUD/4)
+  10          
+  11          
+  12          sbit sLED = P3^3;
+  13          sbit echo = P1^0;
+  14          sbit trig = P1^1;
+  15          
   16          
-  17          
-  18          void setup() {
-  19   1              // 舵机
-  20   1              P4M1 = 0x00, P4M0 = 0xff;
-  21   1              P4 = 0;
-  22   1      
-  23   1              // LED光效
-  24   1              P0M1 = 0x00, P0M0 = 0xff;       // 8段可亮
-  25   1              P2M1 = 0x00, P2M0 = 0x08;       // 8个数码管全可亮
-  26   1              sLED = 1;
-  27   1              P0 = 0;
-  28   1              
-  29   1              // 超声波——定时器0
-  30   1              TMOD = 0x01;
-  31   1              TH0 = 0;
-  32   1              TL0 = 0;
-  33   1              
-  34   1              // 串口通信——定时器1
-  35   1              SCON |= 0x50;
-  36   1              TH1 = TM >> 8;
-  37   1              TL1 = TM;
-  38   1              AUXR = 0x40;
-  39   1              TI = RI = 0;
-  40   1              TR1 = 1;
-  41   1              ES = 1;
-  42   1              EA = 1;
-  43   1              
-  44   1              store_init();   // 存储设备的初始化
-  45   1      }
-  46          
-  47          void getDistance() {
-  48   1              TR1 = 0;
-  49   1              trig = 1;
-  50   1              Delay25us();
-  51   1              trig = 0;
-  52   1              TH0 = TL0 = 0;
-  53   1              while (!echo);
-  54   1              TR0 = 1;
-  55   1              while (echo);
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 09:57:00 PAGE 2   
+  17          uint16 distance;
+  18          uint8 recv_buff;
+  19          
+  20          
+  21          void setup() {
+  22   1              // 步进电机
+  23   1              P4M1 = 0x00, P4M0 = 0xff;
+  24   1              P4 = 0;
+  25   1      
+  26   1              // LED光效
+  27   1              P0M1 = 0x00, P0M0 = 0xff;       // 8段可亮
+  28   1              P2M1 = 0x00, P2M0 = 0x08;
+  29   1              sLED = 1;
+  30   1              P0 = 0;
+  31   1              
+  32   1              // 超声波——定时器0
+  33   1              TMOD = 0x01;
+  34   1              TH0 = 0;
+  35   1              TL0 = 0;
+  36   1              
+  37   1              // 串口通信——定时器1
+  38   1              SCON |= 0x50;
+  39   1              TH1 = TM >> 8;
+  40   1              TL1 = TM;
+  41   1              AUXR = 0x40;
+  42   1              TI = RI = 0;
+  43   1              TR1 = 1;
+  44   1              ES = 1;
+  45   1              EA = 1;
+  46   1              
+  47   1              store_init();   // 存储设备的初始化
+  48   1      }
+  49          
+  50          // 测距函数
+  51          void getDistance() {
+  52   1              TR1 = 0;
+  53   1              trig = 1;
+  54   1              Delay25us();
+  55   1              trig = 0;
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 2   
 
-  56   1              TR0 = 0;
-  57   1              distance = (TH0 * 256 + TL0) * 0.172;
-  58   1              if (distance > 4000) distance = 4000;
-  59   1              TR1 = 1;
-  60   1      }
-  61          
-  62          void loop() {
-  63   1              uint8 i;
-  64   1              while (1) {
-  65   2                      // 接收上位机发送的心跳包，若验证失败则暂停工作
-  66   2                      while (SBUF != ALIVE);
-  67   2                      
-  68   2                      // 顺时针旋转
-  69   2                      for (i = 0; i < direction; ++i) {
-  70   3                              getDistance();
-  71   3                              Duang();
-  72   3                              send_data(distance);
-  73   3                              
-  74   3                              write_addr(i<<1, distance >> 8);
-  75   3                              write_addr((i<<1)+1, distance & 0xff);
-  76   3      
-  77   3                              step(clockwise);
-  78   3                      }
-  79   2                      
-  80   2                      // 逆时针旋转
-  81   2                      for (i = direction-1; i >= 0; --i) {
-  82   3                              getDistance();
-  83   3                              Duang();
-  84   3                              send_data(distance);
-  85   3                              
-  86   3                              write_addr(i<<1, distance >> 8);
-  87   3                              write_addr((i<<1)+1, distance & 0xff);
-  88   3      
-  89   3                              step(anticlockwise);
+  56   1              TH0 = TL0 = 0;
+  57   1              while (!echo);
+  58   1              TR0 = 1;
+  59   1              while (echo);
+  60   1              TR0 = 0;
+  61   1              distance = (TH0 * 256 + TL0) * 0.172;
+  62   1              if (distance > 4000) distance = 4000;
+  63   1              TR1 = 1;
+  64   1      }
+  65          
+  66          // 由于步进电机无法自动调整角度，
+  67          // 需要手动调整初始角度
+  68          
+  69          sbit KEY1 = P3^2;
+  70          sbit KEY2 = P3^3;
+  71          sbit KEY3 = P1^7;
+  72          
+  73          uint16 cnt1, cnt2, cnt3, cnt;
+  74          #define UPDOUND   10
+  75          #define THRESHOLD 7
+  76          
+  77          void adjust() {
+  78   1              while (1) {
+  79   2                      ++cnt;
+  80   2                      if (!KEY1) ++cnt1;
+  81   2                      if (!KEY2) ++cnt2;
+  82   2                      if (!KEY3) ++cnt3;
+  83   2                      if (cnt >= UPDOUND) {
+  84   3                              cnt = cnt1 = cnt2 = cnt3 = 0;
+  85   3                      }
+  86   2                      
+  87   2                      if (cnt1 >= THRESHOLD) {        // 调整结束
+  88   3                              Duang();
+  89   3                              break;
   90   3                      }
-  91   2              }
-  92   1      }
-  93          
-  94          void main() {
-  95   1              setup();
-  96   1              loop();
-  97   1      }
-  98          
-  99          void Uart1() interrupt 4 using 1 {
- 100   1              if (RI) {
- 101   2                      recv_buff = SBUF;
- 102   2                      RI = 0;
- 103   2              }
- 104   1              if (TI) {
- 105   2                      busy = 0;
- 106   2                      TI = 0;
- 107   2              }
- 108   1      }
+  91   2                      else if (cnt2 >= THRESHOLD) {   // 逆时针旋转
+  92   3                              step(clockwise);
+  93   3                      }
+  94   2                      else if (cnt3 >= THRESHOLD) {   // 顺时针旋转
+  95   3                              step(anticlockwise);
+  96   3                      }
+  97   2              }
+  98   1      }
+  99          
+ 100          // 主功能循环
+ 101          void loop() {
+ 102   1              uint8 i;
+ 103   1              while (1) {
+ 104   2                      // 验证上位机状态
+ 105   2                      while (SBUF != ALIVE);
+ 106   2                      
+ 107   2                      for (i = 0; i < direction; ++i) {
+ 108   3                              getDistance();
+ 109   3                              Duang();
+ 110   3                              send_data(distance);
+ 111   3                              
+ 112   3                              write_addr(i<<1, distance >> 8);
+ 113   3                              write_addr((i<<1)+1, distance & 0xff);
+ 114   3      
+ 115   3                              step(anticlockwise);
+ 116   3                      }
+ 117   2                      for (i = direction-1; i >= 0; --i) {
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 3   
+
+ 118   3                              getDistance();
+ 119   3                              Duang();
+ 120   3                              send_data(distance);
+ 121   3                              
+ 122   3                              write_addr(i<<1, distance >> 8);
+ 123   3                              write_addr((i<<1)+1, distance & 0xff);
+ 124   3      
+ 125   3                              step(clockwise);
+ 126   3                      }
+ 127   2              }
+ 128   1      }
+ 129          
+ 130          void main() {
+ 131   1              setup();
+ 132   1              adjust();
+ 133   1              loop();
+ 134   1      }
+ 135          
+ 136          void Uart1() interrupt 4 using 1 {
+ 137   1              if (RI) {
+ 138   2                      recv_buff = SBUF;
+ 139   2                      RI = 0;
+ 140   2              }
+ 141   1              if (TI) {
+ 142   2                      busy = 0;
+ 143   2                      TI = 0;
+ 144   2              }
+ 145   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    775    ----
+   CODE SIZE        =    894    ----
    CONSTANT SIZE    =     18    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      6       9
+   DATA SIZE        =     14       9
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 09:57:00 PAGE 3   
-
    BIT SIZE         =      1       1
 END OF MODULE INFORMATION.
 

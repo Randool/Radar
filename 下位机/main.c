@@ -1,4 +1,4 @@
-#include "support.h"	// 杂项
+#include "support.h"
 #include "store.h"
 #include "servo.h"
 #include "serial.h"
@@ -19,13 +19,13 @@ uint8 recv_buff;
 
 
 void setup() {
-	// 舵机
+	// 步进电机
 	P4M1 = 0x00, P4M0 = 0xff;
 	P4 = 0;
 
 	// LED光效
 	P0M1 = 0x00, P0M0 = 0xff;	// 8段可亮
-	P2M1 = 0x00, P2M0 = 0x08;	// 8个数码管全可亮
+	P2M1 = 0x00, P2M0 = 0x08;
 	sLED = 1;
 	P0 = 0;
 	
@@ -47,6 +47,7 @@ void setup() {
 	store_init();	// 存储设备的初始化
 }
 
+// 测距函数
 void getDistance() {
 	TR1 = 0;
 	trig = 1;
@@ -62,26 +63,48 @@ void getDistance() {
 	TR1 = 1;
 }
 
+// 由于步进电机无法自动调整角度，
+// 需要手动调整初始角度
+
+sbit KEY1 = P3^2;
+sbit KEY2 = P3^3;
+sbit KEY3 = P1^7;
+
+uint16 cnt1, cnt2, cnt3, cnt;
+#define UPDOUND   10
+#define THRESHOLD 7
+
+void adjust() {
+	while (1) {
+		++cnt;
+		if (!KEY1) ++cnt1;
+		if (!KEY2) ++cnt2;
+		if (!KEY3) ++cnt3;
+		if (cnt >= UPDOUND) {
+			cnt = cnt1 = cnt2 = cnt3 = 0;
+		}
+		
+		if (cnt1 >= THRESHOLD) {	// 调整结束
+			Duang();
+			break;
+		}
+		else if (cnt2 >= THRESHOLD) {	// 逆时针旋转
+			step(clockwise);
+		}
+		else if (cnt3 >= THRESHOLD) {	// 顺时针旋转
+			step(anticlockwise);
+		}
+	}
+}
+
+// 主功能循环
 void loop() {
 	uint8 i;
 	while (1) {
-		// 接收上位机发送的心跳包，若验证失败则暂停工作
+		// 验证上位机状态
 		while (SBUF != ALIVE);
 		
-		// 顺时针旋转
 		for (i = 0; i < direction; ++i) {
-			getDistance();
-			Duang();
-			send_data(distance);
-			
-			write_addr(i<<1, distance >> 8);
-			write_addr((i<<1)+1, distance & 0xff);
-
-			step(clockwise);
-		}
-		
-		// 逆时针旋转
-		for (i = direction-1; i >= 0; --i) {
 			getDistance();
 			Duang();
 			send_data(distance);
@@ -91,11 +114,22 @@ void loop() {
 
 			step(anticlockwise);
 		}
+		for (i = direction-1; i >= 0; --i) {
+			getDistance();
+			Duang();
+			send_data(distance);
+			
+			write_addr(i<<1, distance >> 8);
+			write_addr((i<<1)+1, distance & 0xff);
+
+			step(clockwise);
+		}
 	}
 }
 
 void main() {
 	setup();
+	adjust();
 	loop();
 }
 

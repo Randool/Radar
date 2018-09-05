@@ -8,7 +8,7 @@ sbit s4 = P4^4;
 
 void step(bit trend) {
 	uint16 i, z = TIMES;
-	if (trend == clockwise) {
+	if (trend == anticlockwise) {
 		for (i = 0; i < z; ++i) {
 			switch (i % 4) {
 				case 0: s1 = 1; s2 = 0; s3 = 0; s4 = 0; break;
