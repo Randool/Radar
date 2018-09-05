@@ -28,9 +28,11 @@ class RaderCanvas(Contral, FigureCanvas):
         FigureCanvas.updateGeometry(self)
 
         # 数据部分
-        self.rQueue = []
-        self.thetaQueue = []
+        self.rQueue = np.zeros(directions)
+        self.thetaQueue = np.zeros(directions)
         self.buff = 0
+        self.index = 0  # 下标
+        self.trend = 1  # 方向
 
         # 初始化图像
         self.axes.set_rmax(4.3)
@@ -54,13 +56,13 @@ class RaderCanvas(Contral, FigureCanvas):
     def update_figure(self):
         """ 更新作图 """
         r = self.get_distance()
-        print(f"\rr = {r} m")
-        if len(self.rQueue) == directions:
-            self.rQueue.pop(0)
-            self.thetaQueue.pop(0)
-        self.rQueue.append(r)
-        self.buff += step
-        self.thetaQueue.append(self.buff)
+        print(f"r = {r} m")
+        
+        self.rQueue[self.index] = r
+        self.index += self.trend
+        
+        if self.index == -1 or self.index == directions:
+            self.trend = -self.trend
 
         self.axes.cla()
         self.axes.plot(self.thetaQueue, self.rQueue)

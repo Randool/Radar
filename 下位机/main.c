@@ -71,15 +71,23 @@ void loop() {
 			Duang();
 			send_data(distance);
 			
-			/* 记录距离，由于distance为16位，需要传输两次*/
 			write_addr(i<<1, distance >> 8);
 			write_addr((i<<1)+1, distance & 0xff);
-			
+
 			step(clockwise);
 		}
-		// 旋转复位
-		for (i = 0; i < direction; ++i)
+		
+		// 逆时针旋转
+		for (i = direction-1; i >= 0; --i) {
+			getDistance();
+			Duang();
+			send_data(distance);
+			
+			write_addr(i<<1, distance >> 8);
+			write_addr((i<<1)+1, distance & 0xff);
+
 			step(anticlockwise);
+		}
 	}
 }
 

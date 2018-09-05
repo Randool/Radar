@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        09/04/2018  21:52:38  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        09/05/2018  09:57:00  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -44,28 +44,28 @@ LINK MAP OF MODULE:  Rader (?C_STARTUP)
             CODE    01F9H     00B8H     UNIT         ?PR?STEP?MAIN
             CODE    02B1H     008CH     UNIT         ?C_C51STARTUP
             CODE    033DH     0050H     UNIT         ?PR?GETDISTANCE?MAIN
-            CODE    038DH     004DH     UNIT         ?PR?LOOP?MAIN
-            CODE    03DAH     0049H     UNIT         ?PR?_SEND_DATA?MAIN
-            CODE    0423H     0036H     UNIT         ?PR?SETUP?MAIN
-            CODE    0459H     002BH     UNIT         ?PR?READBYTE?MAIN
-            CODE    0484H     0023H     UNIT         ?PR?RESPONSE?MAIN
-            CODE    04A7H     001DH     UNIT         ?PR?_DELAY?MAIN
-            CODE    04C4H     001CH     UNIT         ?PR?DUANG?MAIN
-            CODE    04E0H     001CH     UNIT         ?PR?_READ_ADDR?MAIN
-            CODE    04FCH     0015H     UNIT         ?PR?_WRITE_ADDR?MAIN
-            CODE    0511H     0012H     UNIT         ?CO?MAIN
-            CODE    0523H     0010H     UNIT         ?PR?UART1?MAIN
-            CODE    0533H     000EH     UNIT         ?PR?STORE_INIT?MAIN
-            CODE    0541H     000AH     UNIT         ?PR?START?MAIN
-            CODE    054BH     000AH     UNIT         ?PR?STOP?MAIN
-            CODE    0555H     0008H     UNIT         ?PR?_SEND_BYTE?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 2
+            CODE    038DH     0049H     UNIT         ?PR?_SEND_DATA?MAIN
+            CODE    03D6H     0049H     UNIT         ?PR?LOOP?MAIN
+            CODE    041FH     0036H     UNIT         ?PR?SETUP?MAIN
+            CODE    0455H     002BH     UNIT         ?PR?READBYTE?MAIN
+            CODE    0480H     0029H     UNIT         ?PR?_WRITE_ADDR?MAIN
+            CODE    04A9H     0023H     UNIT         ?PR?RESPONSE?MAIN
+            CODE    04CCH     001DH     UNIT         ?PR?_DELAY?MAIN
+            CODE    04E9H     001CH     UNIT         ?PR?DUANG?MAIN
+            CODE    0505H     001CH     UNIT         ?PR?_READ_ADDR?MAIN
+            CODE    0521H     0012H     UNIT         ?CO?MAIN
+            CODE    0533H     0010H     UNIT         ?PR?UART1?MAIN
+            CODE    0543H     000EH     UNIT         ?PR?STORE_INIT?MAIN
+            CODE    0551H     000AH     UNIT         ?PR?START?MAIN
+            CODE    055BH     000AH     UNIT         ?PR?STOP?MAIN
+            CODE    0565H     0008H     UNIT         ?PR?_SEND_BYTE?MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 2
 
 
-            CODE    055DH     0007H     UNIT         ?PR?DELAY25US?MAIN
-            CODE    0564H     0006H     UNIT         ?PR?DELAY_4US?MAIN
-            CODE    056AH     0006H     UNIT         ?PR?MAIN?MAIN
-            CODE    0570H     0003H     UNIT         ?C_INITSEG
+            CODE    056DH     0007H     UNIT         ?PR?DELAY25US?MAIN
+            CODE    0574H     0006H     UNIT         ?PR?DELAY_4US?MAIN
+            CODE    057AH     0006H     UNIT         ?PR?MAIN?MAIN
+            CODE    0580H     0003H     UNIT         ?C_INITSEG
 
 
 
@@ -119,7 +119,7 @@ SEGMENT                           BIT_GROUP          DATA_GROUP
 
 ?PR?RESPONSE?MAIN              -----    -----      -----    -----
   +--> ?PR?_WRITEBYTE?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 3
 
 
   +--> ?PR?DELAY_4US?MAIN
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   C:02B3H         LINE#         134
   C:02B4H         LINE#         135
   C:02B5H         LINE#         136
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 4
 
 
   C:02B7H         LINE#         185
@@ -200,18 +200,18 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
   D:0008H         PUBLIC        pointer
-  C:0511H         PUBLIC        weixuan
+  C:0521H         PUBLIC        weixuan
   B:00A8H.7       PUBLIC        EA
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
-  C:0569H         PUBLIC        delay_4us
-  C:04A7H         PUBLIC        _delay
+  C:0579H         PUBLIC        delay_4us
+  C:04CCH         PUBLIC        _delay
   B:00A8H.4       PUBLIC        ES
   D:00B8H         PUBLIC        IP
   D:0009H         PUBLIC        read_data
   B:0098H.0       PUBLIC        RI
-  C:04E0H         PUBLIC        _read_addr
+  C:0505H         PUBLIC        _read_addr
   B:00D0H.7       PUBLIC        CY
   B:0098H.1       PUBLIC        TI
   B:0090H.0       PUBLIC        echo
@@ -219,56 +219,56 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   D:00D8H         PUBLIC        CCON
   B:00C0H.2       PUBLIC        s2
   B:00C0H.3       PUBLIC        s3
-  C:056AH         PUBLIC        main
+  C:057AH         PUBLIC        main
   B:00C0H.4       PUBLIC        s4
-  C:03DAH         PUBLIC        _send_data
+  C:038DH         PUBLIC        _send_data
   D:000AH         PUBLIC        write_data
-  C:04FCH         PUBLIC        _write_addr
-  C:0541H         PUBLIC        start
+  C:0494H         PUBLIC        _write_addr
+  C:0551H         PUBLIC        start
   D:0099H         PUBLIC        SBUF
-  C:0423H         PUBLIC        setup
+  C:041FH         PUBLIC        setup
   D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
   D:000BH         PUBLIC        recv_buff
   B:0090H.1       PUBLIC        trig
-  C:038DH         PUBLIC        loop
+  C:03D6H         PUBLIC        loop
   C:01F9H         PUBLIC        step
   D:008EH         PUBLIC        AUXR
-  C:0555H         PUBLIC        _send_byte
-  C:055DH         PUBLIC        Delay25us
+  C:0565H         PUBLIC        _send_byte
+  C:056DH         PUBLIC        Delay25us
   B:0020H.0       SYMBOL        busy
-  C:0533H         PUBLIC        store_init
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 5
+  C:0543H         PUBLIC        store_init
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 5
 
 
-  C:054BH         PUBLIC        stop
+  C:055BH         PUBLIC        stop
   B:00B0H.3       PUBLIC        sLED
   D:008CH         PUBLIC        TH0
   D:008DH         PUBLIC        TH1
-  C:0523H         PUBLIC        Uart1
+  C:0533H         PUBLIC        Uart1
   D:000CH         PUBLIC        distance
   D:008AH         PUBLIC        TL0
   D:008BH         PUBLIC        TL1
-  C:0459H         PUBLIC        readbyte
+  C:0455H         PUBLIC        readbyte
   B:0088H.4       PUBLIC        TR0
   B:0088H.6       PUBLIC        TR1
   B:00C0H.0       PUBLIC        SDA
   B:00C8H.0       PUBLIC        SCL
   C:0003H         PUBLIC        _writebyte
-  C:0519H         PUBLIC        duanxuan
-  C:04C4H         PUBLIC        Duang
+  C:0529H         PUBLIC        duanxuan
+  C:04E9H         PUBLIC        Duang
   C:033DH         PUBLIC        getDistance
-  C:048FH         PUBLIC        response
+  C:04B4H         PUBLIC        response
   D:00D0H         PUBLIC        PSW
   D:0094H         PUBLIC        P0M0
-  C:0564H         SYMBOL        L?0090
-  -------         PROC          L?0089
-  -------         ENDPROC       L?0089
-  C:0564H         SYMBOL        L?0090
+  C:0574H         SYMBOL        L?0091
+  -------         PROC          L?0090
+  -------         ENDPROC       L?0090
+  C:0574H         SYMBOL        L?0091
   -------         PROC          DELAY_4US
-  C:0569H         LINE#         24
-  C:0569H         LINE#         26
+  C:0579H         LINE#         24
+  C:0579H         LINE#         26
   -------         ENDPROC       DELAY_4US
   -------         PROC          _DELAY
   D:0006H         SYMBOL        ms
@@ -276,68 +276,68 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   D:0004H         SYMBOL        i
   D:0005H         SYMBOL        j
   -------         ENDDO         
-  C:04A7H         LINE#         28
-  C:04A7H         LINE#         30
-  C:04B1H         LINE#         31
-  C:04B5H         LINE#         32
-  C:04BBH         LINE#         33
-  C:04C3H         LINE#         34
-  C:04C3H         LINE#         35
+  C:04CCH         LINE#         28
+  C:04CCH         LINE#         30
+  C:04D6H         LINE#         31
+  C:04DAH         LINE#         32
+  C:04E0H         LINE#         33
+  C:04E8H         LINE#         34
+  C:04E8H         LINE#         35
   -------         ENDPROC       _DELAY
   -------         PROC          DELAY25US
   -------         DO            
   D:0007H         SYMBOL        i
   -------         ENDDO         
-  C:055DH         LINE#         37
-  C:055DH         LINE#         39
-  C:055EH         LINE#         40
-  C:055FH         LINE#         41
-  C:0561H         LINE#         42
-  C:0563H         LINE#         43
+  C:056DH         LINE#         37
+  C:056DH         LINE#         39
+  C:056EH         LINE#         40
+  C:056FH         LINE#         41
+  C:0571H         LINE#         42
+  C:0573H         LINE#         43
   -------         ENDPROC       DELAY25US
   -------         PROC          DUANG
   -------         DO            
   D:000FH         SYMBOL        i
   D:0001H         SYMBOL        which_led
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 6
 
 
   -------         ENDDO         
-  C:04C4H         LINE#         45
-  C:04C4H         LINE#         46
-  C:04C9H         LINE#         47
-  C:04D0H         LINE#         48
-  C:04D7H         LINE#         49
-  C:04D9H         LINE#         50
-  C:04DDH         LINE#         51
-  C:04DFH         LINE#         52
+  C:04E9H         LINE#         45
+  C:04E9H         LINE#         46
+  C:04EEH         LINE#         47
+  C:04F5H         LINE#         48
+  C:04FCH         LINE#         49
+  C:04FEH         LINE#         50
+  C:0502H         LINE#         51
+  C:0504H         LINE#         52
   -------         ENDPROC       DUANG
   -------         PROC          STORE_INIT
-  C:0533H         LINE#         10
-  C:0533H         LINE#         12
-  C:0535H         LINE#         13
-  C:0538H         LINE#         14
-  C:053AH         LINE#         15
-  C:053DH         LINE#         17
-  C:0540H         LINE#         18
+  C:0543H         LINE#         10
+  C:0543H         LINE#         12
+  C:0545H         LINE#         13
+  C:0548H         LINE#         14
+  C:054AH         LINE#         15
+  C:054DH         LINE#         17
+  C:0550H         LINE#         18
   -------         ENDPROC       STORE_INIT
   -------         PROC          START
-  C:0541H         LINE#         20
-  C:0541H         LINE#         21
-  C:0543H         LINE#         22
-  C:0543H         LINE#         23
-  C:0543H         LINE#         24
-  C:0546H         LINE#         25
-  C:0548H         LINE#         26
+  C:0551H         LINE#         20
+  C:0551H         LINE#         21
+  C:0553H         LINE#         22
+  C:0553H         LINE#         23
+  C:0553H         LINE#         24
+  C:0556H         LINE#         25
+  C:0558H         LINE#         26
   -------         ENDPROC       START
   -------         PROC          STOP
-  C:054BH         LINE#         29
-  C:054BH         LINE#         30
-  C:054DH         LINE#         31
-  C:054DH         LINE#         32
-  C:054DH         LINE#         33
-  C:0550H         LINE#         34
-  C:0552H         LINE#         35
+  C:055BH         LINE#         29
+  C:055BH         LINE#         30
+  C:055DH         LINE#         31
+  C:055DH         LINE#         32
+  C:055DH         LINE#         33
+  C:0560H         LINE#         34
+  C:0562H         LINE#         35
   -------         ENDPROC       STOP
   -------         PROC          L?0088
   -------         ENDPROC       L?0088
@@ -345,21 +345,21 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   -------         DO            
   D:0007H         SYMBOL        i
   -------         ENDDO         
-  C:048FH         LINE#         38
-  C:048FH         LINE#         39
-  C:0491H         LINE#         40
-  C:0493H         LINE#         41
-  C:0496H         LINE#         44
-  C:049FH         LINE#         45
-  C:04A2H         LINE#         46
-  C:04A4H         LINE#         47
+  C:04B4H         LINE#         38
+  C:04B4H         LINE#         39
+  C:04B6H         LINE#         40
+  C:04B8H         LINE#         41
+  C:04BBH         LINE#         44
+  C:04C4H         LINE#         45
+  C:04C7H         LINE#         46
+  C:04C9H         LINE#         47
   -------         ENDPROC       RESPONSE
   -------         PROC          _WRITEBYTE
   D:0007H         SYMBOL        date
   -------         DO            
   D:0006H         SYMBOL        i
   D:0007H         SYMBOL        temp
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 7
 
 
   -------         ENDDO         
@@ -384,57 +384,59 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   D:0006H         SYMBOL        i
   D:0007H         SYMBOL        k
   -------         ENDDO         
-  C:0459H         LINE#         68
-  C:0459H         LINE#         70
-  C:045BH         LINE#         71
-  C:045EH         LINE#         72
-  C:0460H         LINE#         73
-  C:0463H         LINE#         74
-  C:0465H         LINE#         75
-  C:0467H         LINE#         76
-  C:046AH         LINE#         77
-  C:0474H         LINE#         78
-  C:0477H         LINE#         79
-  C:0479H         LINE#         80
-  C:047CH         LINE#         81
-  C:0480H         LINE#         82
-  C:0483H         LINE#         83
-  C:0483H         LINE#         84
+  C:0455H         LINE#         68
+  C:0455H         LINE#         70
+  C:0457H         LINE#         71
+  C:045AH         LINE#         72
+  C:045CH         LINE#         73
+  C:045FH         LINE#         74
+  C:0461H         LINE#         75
+  C:0463H         LINE#         76
+  C:0466H         LINE#         77
+  C:0470H         LINE#         78
+  C:0473H         LINE#         79
+  C:0475H         LINE#         80
+  C:0478H         LINE#         81
+  C:047CH         LINE#         82
+  C:047FH         LINE#         83
+  C:047FH         LINE#         84
   -------         ENDPROC       READBYTE
+  -------         PROC          L?0089
+  -------         ENDPROC       L?0089
   -------         PROC          _WRITE_ADDR
   D:0004H         SYMBOL        addr
   D:0005H         SYMBOL        date
-  C:04FCH         LINE#         86
-  C:04FEH         LINE#         87
-  C:0501H         LINE#         88
-  C:0506H         LINE#         89
-  C:0509H         LINE#         90
-  C:050BH         LINE#         91
-  C:050BH         LINE#         92
-  C:050BH         LINE#         93
-  C:050EH         LINE#         94
+  C:0494H         LINE#         86
+  C:0496H         LINE#         87
+  C:0499H         LINE#         88
+  C:049EH         LINE#         89
+  C:04A1H         LINE#         90
+  C:04A3H         LINE#         91
+  C:04A3H         LINE#         92
+  C:04A3H         LINE#         93
+  C:04A6H         LINE#         94
   -------         ENDPROC       _WRITE_ADDR
   -------         PROC          _READ_ADDR
   D:0005H         SYMBOL        addr
   -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 8
+
+
   D:0007H         SYMBOL        date
   -------         ENDDO         
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 8
-
-
-  C:04E0H         LINE#         97
-  C:04E2H         LINE#         99
-  C:04E5H         LINE#         100
-  C:04E7H         LINE#         101
-  C:04E7H         LINE#         102
-  C:04E7H         LINE#         103
-  C:04EAH         LINE#         104
-  C:04EDH         LINE#         105
-  C:04F2H         LINE#         106
-  C:04F5H         LINE#         107
-  C:04F8H         LINE#         108
-  C:04FBH         LINE#         109
-  C:04FBH         LINE#         110
+  C:0505H         LINE#         97
+  C:0507H         LINE#         99
+  C:050AH         LINE#         100
+  C:050CH         LINE#         101
+  C:050CH         LINE#         102
+  C:050CH         LINE#         103
+  C:050FH         LINE#         104
+  C:0512H         LINE#         105
+  C:0517H         LINE#         106
+  C:051AH         LINE#         107
+  C:051DH         LINE#         108
+  C:0520H         LINE#         109
+  C:0520H         LINE#         110
   -------         ENDPROC       _READ_ADDR
   -------         PROC          STEP
   B:0020H.1       SYMBOL        trend
@@ -470,54 +472,54 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   -------         ENDPROC       STEP
   -------         PROC          _SEND_BYTE
   D:0007H         SYMBOL        byte
-  C:0555H         LINE#         7
-  C:0555H         LINE#         8
-  C:0557H         LINE#         9
-  C:055AH         LINE#         10
-  C:055CH         LINE#         11
+  C:0565H         LINE#         7
+  C:0565H         LINE#         8
+  C:0567H         LINE#         9
+  C:056AH         LINE#         10
+  C:056CH         LINE#         11
   -------         ENDPROC       _SEND_BYTE
   -------         PROC          _SEND_DATA
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 9
+
+
   D:000FH         SYMBOL        Data
   -------         DO            
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 9
-
-
   D:0011H         SYMBOL        i
   -------         ENDDO         
-  C:03DAH         LINE#         16
-  C:03DEH         LINE#         18
-  C:03E4H         LINE#         20
-  C:03E6H         LINE#         21
-  C:03F1H         LINE#         22
-  C:03FDH         LINE#         23
-  C:0406H         LINE#         24
-  C:0406H         LINE#         26
-  C:0406H         LINE#         27
-  C:040BH         LINE#         28
-  C:0412H         LINE#         29
-  C:0418H         LINE#         31
-  C:041EH         LINE#         32
+  C:038DH         LINE#         16
+  C:0391H         LINE#         18
+  C:0397H         LINE#         20
+  C:0399H         LINE#         21
+  C:03A4H         LINE#         22
+  C:03B0H         LINE#         23
+  C:03B9H         LINE#         24
+  C:03B9H         LINE#         26
+  C:03B9H         LINE#         27
+  C:03BEH         LINE#         28
+  C:03C5H         LINE#         29
+  C:03CBH         LINE#         31
+  C:03D1H         LINE#         32
   -------         ENDPROC       _SEND_DATA
   -------         PROC          SETUP
-  C:0423H         LINE#         18
-  C:0423H         LINE#         20
-  C:0429H         LINE#         21
-  C:042BH         LINE#         24
-  C:0430H         LINE#         25
-  C:0435H         LINE#         26
-  C:0437H         LINE#         27
-  C:0439H         LINE#         30
-  C:043CH         LINE#         31
-  C:043EH         LINE#         32
-  C:0440H         LINE#         35
-  C:0443H         LINE#         36
-  C:0446H         LINE#         37
-  C:0449H         LINE#         38
-  C:044CH         LINE#         39
-  C:0450H         LINE#         40
-  C:0452H         LINE#         41
-  C:0454H         LINE#         42
-  C:0456H         LINE#         44
+  C:041FH         LINE#         18
+  C:041FH         LINE#         20
+  C:0425H         LINE#         21
+  C:0427H         LINE#         24
+  C:042CH         LINE#         25
+  C:0431H         LINE#         26
+  C:0433H         LINE#         27
+  C:0435H         LINE#         30
+  C:0438H         LINE#         31
+  C:043AH         LINE#         32
+  C:043CH         LINE#         35
+  C:043FH         LINE#         36
+  C:0442H         LINE#         37
+  C:0445H         LINE#         38
+  C:0448H         LINE#         39
+  C:044CH         LINE#         40
+  C:044EH         LINE#         41
+  C:0450H         LINE#         42
+  C:0452H         LINE#         44
   -------         ENDPROC       SETUP
   -------         PROC          GETDISTANCE
   C:033DH         LINE#         47
@@ -537,41 +539,47 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
   -------         ENDPROC       GETDISTANCE
   -------         PROC          LOOP
   -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 10
+
+
   D:000EH         SYMBOL        i
   -------         ENDDO         
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/04/2018  21:52:38  PAGE 10
-
-
-  C:038DH         LINE#         62
-  C:038DH         LINE#         64
-  C:038DH         LINE#         66
-  C:0392H         LINE#         69
-  C:0395H         LINE#         70
-  C:0398H         LINE#         71
-  C:039BH         LINE#         72
-  C:03A2H         LINE#         75
-  C:03ADH         LINE#         76
-  C:03B9H         LINE#         78
-  C:03BEH         LINE#         79
-  C:03C7H         LINE#         81
-  C:03D1H         LINE#         82
+  C:03D6H         LINE#         62
+  C:03D6H         LINE#         64
+  C:03D6H         LINE#         66
+  C:03DBH         LINE#         69
+  C:03DEH         LINE#         70
+  C:03E1H         LINE#         71
+  C:03E4H         LINE#         72
+  C:03EBH         LINE#         74
+  C:03EBH         LINE#         75
+  C:03EEH         LINE#         77
+  C:03F3H         LINE#         78
+  C:03FCH         LINE#         81
+  C:0406H         LINE#         82
+  C:0409H         LINE#         83
+  C:040CH         LINE#         84
+  C:0413H         LINE#         86
+  C:0413H         LINE#         87
+  C:0416H         LINE#         89
+  C:041BH         LINE#         90
   -------         ENDPROC       LOOP
   -------         PROC          MAIN
-  C:056AH         LINE#         86
-  C:056AH         LINE#         87
-  C:056DH         LINE#         88
+  C:057AH         LINE#         94
+  C:057AH         LINE#         95
+  C:057DH         LINE#         96
   -------         ENDPROC       MAIN
   -------         PROC          UART1
-  C:0523H         LINE#         91
-  C:0523H         LINE#         92
-  C:0526H         LINE#         93
-  C:0529H         LINE#         94
-  C:052BH         LINE#         95
-  C:052BH         LINE#         96
-  C:052EH         LINE#         97
-  C:0530H         LINE#         98
-  C:0532H         LINE#         99
-  C:0532H         LINE#         100
+  C:0533H         LINE#         99
+  C:0533H         LINE#         100
+  C:0536H         LINE#         101
+  C:0539H         LINE#         102
+  C:053BH         LINE#         103
+  C:053BH         LINE#         104
+  C:053EH         LINE#         105
+  C:0540H         LINE#         106
+  C:0542H         LINE#         107
+  C:0542H         LINE#         108
   -------         ENDPROC       UART1
   -------         ENDMOD        MAIN
 
@@ -591,10 +599,13 @@ SYMBOL TABLE OF MODULE:  Rader (?C_STARTUP)
 
   -------         MODULE        ?C?LNEG
   C:01EBH         PUBLIC        ?C?LNEG
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/05/2018  09:57:00  PAGE 11
+
+
   -------         ENDMOD        ?C?LNEG
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?CO?MAIN
 
-Program Size: data=20.2 xdata=0 code=1393
+Program Size: data=20.2 xdata=0 code=1409
 LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
