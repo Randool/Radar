@@ -3,13 +3,16 @@
 #include "servo.h"
 #include "serial.h"
 
+
 #define FOCS 11059200L
 #define BAUD 9600
 #define TM   (65536 - FOCS/BAUD/4)
 
+
 sbit sLED = P3^3;
 sbit echo = P1^0;
 sbit trig = P1^1;
+
 
 uint16 distance;
 uint8 recv_buff;

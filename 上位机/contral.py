@@ -10,11 +10,10 @@ class Contral:
 
     def __init__(self, BAUD=9600):
         self.BAUD = BAUD
-        self.ack = b"\x11"
+        self.ACK = b"\x11"
         self.READ = b'\x22'
-        self.port = None
+        self.__port__ = None
         self.serial = None
-        self.counter = 0    # 用于和下位机保持计数一致
 
     def connect_STC(self):
         """ 自动扫描端口并连接 """
@@ -26,10 +25,10 @@ class Contral:
             port_info = list(port)
             if "CH340" in port_info[1]:
                 print(f"STC 在 [{port_info[0]}]")
-                self.port = port_info[0]
+                self.__port__ = port_info[0]
                 break
-        if self.port is not None:
-            self.serial = serial.Serial(self.port, self.BAUD)
+        if self.__port__ is not None:
+            self.serial = serial.Serial(self.__port__, self.BAUD)
             print("安排上了")
         else:
             print("请检查端口是否连接")
@@ -39,10 +38,10 @@ class Contral:
         if self.serial is None:
             return
         try:
-            self.serial.write(self.ack)
+            self.serial.write(self.ACK)
             self.serial.close()
             self.serial = None
-            self.port = None
+            self.__port__ = None
             print("取消安排")
         except Exception as e:
             print(e)
@@ -52,7 +51,7 @@ class Contral:
         self.serial.flushInput()
         while True:
             a = self.serial.read()
-            if a == self.ack:
+            if a == self.ACK:
                 continue
             else:
                 b = self.serial.read()
