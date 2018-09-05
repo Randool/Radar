@@ -7,7 +7,6 @@ from canvas import QtCore, RaderCanvas, directions
 
 
 class AppWindow(QtWidgets.QMainWindow):
-    """ GUI主程序。添加help，最后加上按钮 """
 
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)

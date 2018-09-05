@@ -66,9 +66,9 @@ void getDistance() {
 // 由于步进电机无法自动调整角度，
 // 需要手动调整初始角度
 
-sbit KEY1 = P3^2;
-sbit KEY2 = P3^3;
-sbit KEY3 = P1^7;
+sbit KEY1 = P3^2;	// 确认键
+sbit KEY2 = P3^3;	// 控制逆时针旋转
+sbit KEY3 = P1^7;	// 控制顺时针旋转
 
 void adjust() {
 	while (1) {
@@ -92,23 +92,26 @@ void loop() {
 		// 验证上位机状态
 		while (SBUF != ALIVE);
 		
-		for (i = 0; i < direction; ++i) {
+		while (i < direction) {
 			getDistance();
 			Duang();
 			send_data(distance);
 			
 			write_addr(i<<1, distance >> 8);
 			write_addr((i<<1)+1, distance & 0xff);
+			++i;
 
 			step(anticlockwise);
 		}
-		for (i = direction-1; i >= 0; --i) {
+		
+		while (i) {
 			getDistance();
 			Duang();
 			send_data(distance);
 			
 			write_addr(i<<1, distance >> 8);
 			write_addr((i<<1)+1, distance & 0xff);
+			--i;
 
 			step(clockwise);
 		}
