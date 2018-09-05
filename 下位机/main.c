@@ -70,28 +70,16 @@ sbit KEY1 = P3^2;
 sbit KEY2 = P3^3;
 sbit KEY3 = P1^7;
 
-uint16 cnt1, cnt2, cnt3, cnt;
-#define UPDOUND   10
-#define THRESHOLD 7
-
 void adjust() {
 	while (1) {
-		++cnt;
-		if (!KEY1) ++cnt1;
-		if (!KEY2) ++cnt2;
-		if (!KEY3) ++cnt3;
-		if (cnt >= UPDOUND) {
-			cnt = cnt1 = cnt2 = cnt3 = 0;
-		}
-		
-		if (cnt1 >= THRESHOLD) {	// 调整结束
+		if (!KEY1) {	// 调整结束
 			Duang();
 			break;
 		}
-		else if (cnt2 >= THRESHOLD) {	// 逆时针旋转
+		else if (!KEY2) {	// 逆时针旋转
 			step(clockwise);
 		}
-		else if (cnt3 >= THRESHOLD) {	// 顺时针旋转
+		else if (!KEY3) {	// 顺时针旋转
 			step(anticlockwise);
 		}
 	}

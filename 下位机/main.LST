@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:27:08 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53   1              trig = 1;
   54   1              Delay25us();
   55   1              trig = 0;
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:27:08 PAGE 2   
 
   56   1              TH0 = TL0 = 0;
   57   1              while (!echo);
@@ -81,89 +81,100 @@ line level    source
   70          sbit KEY2 = P3^3;
   71          sbit KEY3 = P1^7;
   72          
-  73          uint16 cnt1, cnt2, cnt3, cnt;
-  74          #define UPDOUND   10
-  75          #define THRESHOLD 7
-  76          
-  77          void adjust() {
-  78   1              while (1) {
-  79   2                      ++cnt;
-  80   2                      if (!KEY1) ++cnt1;
-  81   2                      if (!KEY2) ++cnt2;
-  82   2                      if (!KEY3) ++cnt3;
-  83   2                      if (cnt >= UPDOUND) {
-  84   3                              cnt = cnt1 = cnt2 = cnt3 = 0;
-  85   3                      }
-  86   2                      
-  87   2                      if (cnt1 >= THRESHOLD) {        // 调整结束
-  88   3                              Duang();
-  89   3                              break;
-  90   3                      }
-  91   2                      else if (cnt2 >= THRESHOLD) {   // 逆时针旋转
-  92   3                              step(clockwise);
-  93   3                      }
-  94   2                      else if (cnt3 >= THRESHOLD) {   // 顺时针旋转
-  95   3                              step(anticlockwise);
-  96   3                      }
-  97   2              }
-  98   1      }
-  99          
- 100          // 主功能循环
- 101          void loop() {
- 102   1              uint8 i;
- 103   1              while (1) {
- 104   2                      // 验证上位机状态
- 105   2                      while (SBUF != ALIVE);
- 106   2                      
- 107   2                      for (i = 0; i < direction; ++i) {
- 108   3                              getDistance();
- 109   3                              Duang();
- 110   3                              send_data(distance);
- 111   3                              
- 112   3                              write_addr(i<<1, distance >> 8);
- 113   3                              write_addr((i<<1)+1, distance & 0xff);
- 114   3      
- 115   3                              step(anticlockwise);
- 116   3                      }
- 117   2                      for (i = direction-1; i >= 0; --i) {
-C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:24:08 PAGE 3   
+  73          /*
+  74          uint16 cnt1, cnt2, cnt3, cnt;
+  75          #define UPDOUND   10
+  76          #define THRESHOLD 7
+  77          */
+  78          void adjust() {
+  79   1              while (1) {
+  80   2                      /*++cnt;
+  81   2                      if (!KEY1) ++cnt1;
+  82   2                      if (!KEY2) ++cnt2;
+  83   2                      if (!KEY3) ++cnt3;
+  84   2                      if (cnt >= UPDOUND) {
+  85   2                              cnt = cnt1 = cnt2 = cnt3 = 0;
+  86   2                      }
+  87   2                      
+  88   2                      if (cnt1 >= THRESHOLD) {        // 调整结束
+  89   2                              Duang();
+  90   2                              break;
+  91   2                      }
+  92   2                      else if (cnt2 >= THRESHOLD) {   // 逆时针旋转
+  93   2                              step(clockwise);
+  94   2                      }
+  95   2                      else if (cnt3 >= THRESHOLD) {   // 顺时针旋转
+  96   2                              step(anticlockwise);
+  97   2                      }*/
+  98   2                      if (!KEY1) {    // 调整结束
+  99   3                              Duang();
+ 100   3                              break;
+ 101   3                      }
+ 102   2                      else if (!KEY2) {       // 逆时针旋转
+ 103   3                              step(clockwise);
+ 104   3                      }
+ 105   2                      else if (!KEY3) {       // 顺时针旋转
+ 106   3                              step(anticlockwise);
+ 107   3                      }
+ 108   2              }
+ 109   1      }
+ 110          
+ 111          // 主功能循环
+ 112          void loop() {
+ 113   1              uint8 i;
+ 114   1              while (1) {
+ 115   2                      // 验证上位机状态
+ 116   2                      while (SBUF != ALIVE);
+ 117   2                      
+C51 COMPILER V9.51   MAIN                                                                  09/05/2018 14:27:08 PAGE 3   
 
- 118   3                              getDistance();
- 119   3                              Duang();
- 120   3                              send_data(distance);
- 121   3                              
- 122   3                              write_addr(i<<1, distance >> 8);
- 123   3                              write_addr((i<<1)+1, distance & 0xff);
- 124   3      
- 125   3                              step(clockwise);
- 126   3                      }
- 127   2              }
- 128   1      }
- 129          
- 130          void main() {
- 131   1              setup();
- 132   1              adjust();
- 133   1              loop();
- 134   1      }
- 135          
- 136          void Uart1() interrupt 4 using 1 {
- 137   1              if (RI) {
- 138   2                      recv_buff = SBUF;
- 139   2                      RI = 0;
- 140   2              }
- 141   1              if (TI) {
- 142   2                      busy = 0;
- 143   2                      TI = 0;
- 144   2              }
+ 118   2                      for (i = 0; i < direction; ++i) {
+ 119   3                              getDistance();
+ 120   3                              Duang();
+ 121   3                              send_data(distance);
+ 122   3                              
+ 123   3                              write_addr(i<<1, distance >> 8);
+ 124   3                              write_addr((i<<1)+1, distance & 0xff);
+ 125   3      
+ 126   3                              step(anticlockwise);
+ 127   3                      }
+ 128   2                      for (i = direction-1; i >= 0; --i) {
+ 129   3                              getDistance();
+ 130   3                              Duang();
+ 131   3                              send_data(distance);
+ 132   3                              
+ 133   3                              write_addr(i<<1, distance >> 8);
+ 134   3                              write_addr((i<<1)+1, distance & 0xff);
+ 135   3      
+ 136   3                              step(clockwise);
+ 137   3                      }
+ 138   2              }
+ 139   1      }
+ 140          
+ 141          void main() {
+ 142   1              setup();
+ 143   1              adjust();
+ 144   1              loop();
  145   1      }
+ 146          
+ 147          void Uart1() interrupt 4 using 1 {
+ 148   1              if (RI) {
+ 149   2                      recv_buff = SBUF;
+ 150   2                      RI = 0;
+ 151   2              }
+ 152   1              if (TI) {
+ 153   2                      busy = 0;
+ 154   2                      TI = 0;
+ 155   2              }
+ 156   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    894    ----
+   CODE SIZE        =    801    ----
    CONSTANT SIZE    =     18    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     14       9
+   DATA SIZE        =      6       9
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1       1
 END OF MODULE INFORMATION.
