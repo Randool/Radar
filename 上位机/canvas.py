@@ -41,7 +41,7 @@ class RaderCanvas(Contral, FigureCanvas):
         # 计时器
         self.__timer__ = QtCore.QTimer(self)
 
-    def start_measure(self, freq=150):
+    def start_measure(self, freq=60):
         """ 连接STC并启动定时器 """
         self.serial.write(b"\xee")
         self.__timer__.timeout.connect(self.update_figure)

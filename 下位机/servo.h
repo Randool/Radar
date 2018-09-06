@@ -1,5 +1,8 @@
 #define TIMES (2048 / direction)
 
+sbit KEY1 = P3^2;	// 确认键
+sbit KEY2 = P3^3;	// 控制逆时针旋转
+sbit KEY3 = P1^7;	// 控制顺时针旋转
 
 sbit s1 = P4^1;
 sbit s2 = P4^2;
@@ -30,6 +33,23 @@ void step(bit trend) {
 		}
 	}
 	P4 = 0;
+}
+
+// 由于步进电机无法自动调整角度，
+// 需要手动调整初始角度
+void adjust() {
+	while (1) {
+		if (!KEY1) {
+			Duang();
+			break;
+		}
+		else if (!KEY2) {
+			step(clockwise);
+		}
+		else if (!KEY3) {
+			step(anticlockwise);
+		}
+	}
 }
 
 /*

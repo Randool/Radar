@@ -8,7 +8,7 @@
 #define direction	32	// 取样方向数，需要为2的倍数
 #define wait_ack	5	// 发送ack的间隔时间
 
-#define clockwise 1
+#define clockwise     1
 #define anticlockwise 0
 
 typedef unsigned int uint16;
@@ -21,11 +21,7 @@ uint8 code duanxuan[10] = {
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
 };
 
-void delay_4us() {
-	;;
-}
-
-void delay(uint16 ms) {
+void delay(uint8 ms) {
 	uint8 i, j;
 	while (ms--) {
 		i = 11, j = 190;

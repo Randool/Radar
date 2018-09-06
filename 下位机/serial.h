@@ -16,10 +16,13 @@ void send_byte(uint8 byte) {
 void send_data(uint16 Data) {
 	// 上位机请求读取存储
 	if ( SBUF == READ ) {
-		uint8 i;
-		for (i = 0; i < direction; ++i) {
-			send_byte(read_addr(i<<1));
-			send_byte(read_addr((i<<1)+1));
+		uint8 i = 0;
+		while (i < direction) {
+			send_byte( read_addr(i<<1) );
+			delay(1);
+			send_byte( read_addr((i<<1)+1) );
+			delay(1);
+			++i;
 		}
 	}
 	

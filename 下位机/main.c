@@ -1,6 +1,7 @@
 #include "support.h"
-#include "store.h"
 #include "servo.h"
+#include "ultrasonic.h"
+#include "store.h"
 #include "serial.h"
 
 
@@ -10,11 +11,7 @@
 
 
 sbit sLED = P3^3;
-sbit echo = P1^0;
-sbit trig = P1^1;
 
-
-uint16 distance;
 uint8 recv_buff;
 
 
@@ -43,46 +40,6 @@ void setup() {
 	TR1 = 1;
 	ES = 1;
 	EA = 1;
-	
-	store_init();	// 存储设备的初始化
-}
-
-// 测距函数
-void getDistance() {
-	TR1 = 0;
-	trig = 1;
-	Delay25us();
-	trig = 0;
-	TH0 = TL0 = 0;
-	while (!echo);
-	TR0 = 1;
-	while (echo);
-	TR0 = 0;
-	distance = (TH0 * 256 + TL0) * 0.172;
-	if (distance > 4000) distance = 4000;
-	TR1 = 1;
-}
-
-// 由于步进电机无法自动调整角度，
-// 需要手动调整初始角度
-
-sbit KEY1 = P3^2;	// 确认键
-sbit KEY2 = P3^3;	// 控制逆时针旋转
-sbit KEY3 = P1^7;	// 控制顺时针旋转
-
-void adjust() {
-	while (1) {
-		if (!KEY1) {	// 调整结束
-			Duang();
-			break;
-		}
-		else if (!KEY2) {	// 逆时针旋转
-			step(clockwise);
-		}
-		else if (!KEY3) {	// 顺时针旋转
-			step(anticlockwise);
-		}
-	}
 }
 
 // 主功能循环
@@ -120,6 +77,7 @@ void loop() {
 
 void main() {
 	setup();
+	IIC_init();	// 存储设备的初始化
 	adjust();
 	loop();
 }
