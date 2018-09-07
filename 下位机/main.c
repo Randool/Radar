@@ -1,3 +1,6 @@
+#include "STC15F2K60S2.H"
+#include <intrins.h>
+
 #include "support.h"
 #include "servo.h"
 #include "ultrasonic.h"
@@ -76,10 +79,12 @@ void loop() {
 }
 
 void main() {
+	// 设备初始化
 	setup();
-	IIC_init();	// 存储设备的初始化
-	adjust();
-	loop();
+	IIC_init();
+	
+	adjust();	// 步进电机调整
+	loop();		// 主循环
 }
 
 void Uart1() interrupt 4 using 1 {

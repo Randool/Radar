@@ -1,3 +1,6 @@
+#ifndef SERVO_H
+#define SERVO_H
+
 #define TIMES (2048 / direction)
 
 sbit KEY1 = P3^2;	// È·ÈÏ¼ü
@@ -19,7 +22,7 @@ void step(bit trend) {
 				case 2: s1 = 0; s2 = 0; s3 = 1; s4 = 0; break;
 				case 3: s1 = 0; s2 = 0; s3 = 0; s4 = 1; break;
 			}
-			delay(1);
+			delay_ms(1);
 		}
 	} else {
 		for (i = 0; i < z; ++i) {
@@ -29,7 +32,7 @@ void step(bit trend) {
 				case 2: s1 = 0; s2 = 1; s3 = 0; s4 = 0; break;
 				case 3: s1 = 1; s2 = 0; s3 = 0; s4 = 0; break;
 			}
-			delay(1);
+			delay_ms(1);
 		}
 	}
 	P4 = 0;
@@ -51,6 +54,8 @@ void adjust() {
 		}
 	}
 }
+
+#endif
 
 /*
 STEP	A	B	C	D

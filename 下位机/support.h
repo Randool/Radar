@@ -1,5 +1,5 @@
-#include "STC15F2K60S2.H"
-#include <intrins.h>
+#ifndef SUPPORT_H
+#define SUPPORT_H
 
 /**
  * 改变这些配置可以提升速度
@@ -21,7 +21,7 @@ uint8 code duanxuan[10] = {
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
 };
 
-void delay(uint8 ms) {
+void delay_ms(uint8 ms) {
 	uint8 i, j;
 	while (ms--) {
 		i = 11, j = 190;
@@ -41,8 +41,10 @@ void Delay25us() {
 void Duang() {
 	uint8 i = 9, which_led = 0x80;
 	while (i--) {
-		delay(Duang_time);
+		delay_ms(Duang_time);
 		P0 = which_led;
 		which_led >>= 1;
 	}
 }
+
+#endif

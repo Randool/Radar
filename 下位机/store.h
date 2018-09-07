@@ -1,85 +1,83 @@
-// 非易失性存储
+sbit SDA = P4^0;		  	//I2C总线的数据线
+sbit SCL = P5^5;		  	//I2C总线的时钟线
 
-sbit SDA = P4 ^ 0;	// I2C总线数据线
-sbit SCL = P5 ^ 0;	// I2C总线时钟线
-
-void delay_4us() { 		//延时4us
+void delay() { 		//延时4us
 	;;
 }
 
 void IIC_init() {	//I2C总线初始化
 	SCL=1;
-	delay_4us();
+	delay();
 	SDA=1;
-	delay_4us();
+	delay();
 }
 
 void start() {	 	//主机启动信号
  	SDA = 1;
-	delay_4us();
+	delay();
 	SCL = 1;
-	delay_4us();
+	delay();
 	SDA = 0;
-	delay_4us();
+	delay();
 }
 
 void stop()	{	 	//停止信号
  	SDA=0;
-	delay_4us();
+	delay();
 	SCL=1;
-	delay_4us();
+	delay();
 	SDA=1;
-	delay_4us();
+	delay();
 }
 
 void respons() {	//从机应答信号
 	uint8 i=0;
 	SCL=1;
-	delay_4us();
+	delay();
 	while(SDA==1 && (i<255))  //表示若在一段时间内没有收到从器件的应答则
 		i++;				//主器件默认从期间已经收到数据而不再等待应答信号。 
 	SCL=0;
-	delay_4us();
+	delay();
 }
 
 void writebyte(uint8 date) { //对24C16写一个字节数据
 	uint8 i, temp;
-	temp = date;
+	temp=date;
 	for(i=0;i<8;i++) {
 		temp = temp << 1;
 		SCL = 0;
-		delay_4us();
+		delay();
 		SDA = CY;
-		delay_4us();
+		delay();
 		SCL = 1;
-		delay_4us();
+		delay();
 	}
 	SCL=0;
-	delay_4us();
+	delay();
 	SDA=1;
-	delay_4us();	
+	delay();	
 }
 
 uint8 readbyte() {	//从24C16读一个字节数据
 	uint8 i,k;
 	SCL=0;
-	delay_4us();
+	delay();
 	SDA=1;
-	delay_4us();
+	delay();
 	for(i=0;i<8;i++)
 	{
 		SCL=1;
-		delay_4us();
+		delay();
 		k=(k<<1)|SDA;
-		delay_4us();
+		delay();
 		SCL=0;
-		delay_4us();
+		delay();
 	}
-	delay_4us();
+	delay();
 	return k;	
 }
 
-void write_addr(uint8 addr, uint8 date) {  //对24C16的地址addr，写入一个数据date
+void write_addr(uint8 addr,uint8 date) {  //对24C16的地址addr，写入一个数据date
 	start();
 	writebyte(0xa0);							
 	respons();

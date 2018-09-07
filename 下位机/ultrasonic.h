@@ -1,3 +1,6 @@
+#ifndef ULTRASONIC_H
+#define ULTRASONIC_H
+
 sbit echo = P1^0;
 sbit trig = P1^1;
 
@@ -18,3 +21,5 @@ void getDistance() {
 	if (distance > 4000) distance = 4000;
 	TR1 = 1;
 }
+
+#endif

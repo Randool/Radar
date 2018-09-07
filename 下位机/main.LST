@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  09/06/2018 19:58:28 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  09/07/2018 15:34:41 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -7,106 +7,117 @@ COMPILER INVOKED BY: F:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
-   1          #include "support.h"
-   2          #include "servo.h"
-   3          #include "ultrasonic.h"
-   4          #include "store.h"
-   5          #include "serial.h"
-   6          
-   7          
-   8          #define FOCS 11059200L
-   9          #define BAUD 9600
-  10          #define TM   (65536 - FOCS/BAUD/4)
-  11          
-  12          
-  13          sbit sLED = P3^3;
+   1          #include "STC15F2K60S2.H"
+   2          #include <intrins.h>
+   3          
+   4          #include "support.h"
+   5          #include "servo.h"
+   6          #include "ultrasonic.h"
+   7          #include "store.h"
+   8          #include "serial.h"
+   9          
+  10          
+  11          #define FOCS 11059200L
+  12          #define BAUD 9600
+  13          #define TM   (65536 - FOCS/BAUD/4)
   14          
-  15          uint8 recv_buff;
-  16          
+  15          
+  16          sbit sLED = P3^3;
   17          
-  18          void setup() {
-  19   1              // 步进电机
-  20   1              P4M1 = 0x00, P4M0 = 0xff;
-  21   1              P4 = 0;
-  22   1      
-  23   1              // LED光效
-  24   1              P0M1 = 0x00, P0M0 = 0xff;       // 8段可亮
-  25   1              P2M1 = 0x00, P2M0 = 0x08;
-  26   1              sLED = 1;
-  27   1              P0 = 0;
-  28   1              
-  29   1              // 超声波——定时器0
-  30   1              TMOD = 0x01;
-  31   1              TH0 = 0;
-  32   1              TL0 = 0;
-  33   1              
-  34   1              // 串口通信——定时器1
-  35   1              SCON |= 0x50;
-  36   1              TH1 = TM >> 8;
-  37   1              TL1 = TM;
-  38   1              AUXR = 0x40;
-  39   1              TI = RI = 0;
-  40   1              TR1 = 1;
-  41   1              ES = 1;
-  42   1              EA = 1;
-  43   1      }
-  44          
-  45          // 主功能循环
-  46          void loop() {
-  47   1              uint8 i;
-  48   1              while (1) {
-  49   2                      // 验证上位机状态
-  50   2                      while (SBUF != ALIVE);
-  51   2                      
-  52   2                      while (i < direction) {
-  53   3                              getDistance();
-  54   3                              Duang();
-  55   3                              send_data(distance);
-C51 COMPILER V9.51   MAIN                                                                  09/06/2018 19:58:28 PAGE 2   
+  18          uint8 recv_buff;
+  19          
+  20          
+  21          void setup() {
+  22   1              // 步进电机
+  23   1              P4M1 = 0x00, P4M0 = 0xff;
+  24   1              P4 = 0;
+  25   1      
+  26   1              // LED光效
+  27   1              P0M1 = 0x00, P0M0 = 0xff;       // 8段可亮
+  28   1              P2M1 = 0x00, P2M0 = 0x08;
+  29   1              sLED = 1;
+  30   1              P0 = 0;
+  31   1              
+  32   1              // 超声波——定时器0
+  33   1              TMOD = 0x01;
+  34   1              TH0 = 0;
+  35   1              TL0 = 0;
+  36   1              
+  37   1              // 串口通信——定时器1
+  38   1              SCON |= 0x50;
+  39   1              TH1 = TM >> 8;
+  40   1              TL1 = TM;
+  41   1              AUXR = 0x40;
+  42   1              TI = RI = 0;
+  43   1              TR1 = 1;
+  44   1              ES = 1;
+  45   1              EA = 1;
+  46   1      }
+  47          
+  48          // 主功能循环
+  49          void loop() {
+  50   1              uint8 i;
+  51   1              while (1) {
+  52   2                      // 验证上位机状态
+  53   2                      while (SBUF != ALIVE);
+  54   2                      
+  55   2                      while (i < direction) {
+C51 COMPILER V9.51   MAIN                                                                  09/07/2018 15:34:41 PAGE 2   
 
-  56   3                              
-  57   3                              write_addr(i<<1, distance >> 8);
-  58   3                              write_addr((i<<1)+1, distance & 0xff);
-  59   3                              ++i;
-  60   3      
-  61   3                              step(anticlockwise);
-  62   3                      }
-  63   2                      
-  64   2                      while (i) {
-  65   3                              getDistance();
-  66   3                              Duang();
-  67   3                              send_data(distance);
-  68   3                              
-  69   3                              write_addr(i<<1, distance >> 8);
-  70   3                              write_addr((i<<1)+1, distance & 0xff);
-  71   3                              --i;
-  72   3      
-  73   3                              step(clockwise);
-  74   3                      }
-  75   2              }
-  76   1      }
-  77          
-  78          void main() {
-  79   1              setup();
-  80   1              IIC_init();     // 存储设备的初始化
-  81   1              adjust();
-  82   1              loop();
-  83   1      }
-  84          
-  85          void Uart1() interrupt 4 using 1 {
-  86   1              if (RI) {
-  87   2                      recv_buff = SBUF;
-  88   2                      RI = 0;
-  89   2              }
-  90   1              if (TI) {
-  91   2                      busy = 0;
-  92   2                      TI = 0;
-  93   2              }
+  56   3                              getDistance();
+  57   3                              Duang();
+  58   3                              send_data(distance);
+  59   3                              
+  60   3                              write_addr(i<<1, distance >> 8);
+  61   3                              write_addr((i<<1)+1, distance & 0xff);
+  62   3                              ++i;
+  63   3      
+  64   3                              step(anticlockwise);
+  65   3                      }
+  66   2                      
+  67   2                      while (i) {
+  68   3                              getDistance();
+  69   3                              Duang();
+  70   3                              send_data(distance);
+  71   3                              
+  72   3                              write_addr(i<<1, distance >> 8);
+  73   3                              write_addr((i<<1)+1, distance & 0xff);
+  74   3                              --i;
+  75   3      
+  76   3                              step(clockwise);
+  77   3                      }
+  78   2              }
+  79   1      }
+  80          
+  81          void main() {
+  82   1              uint8 i;
+  83   1              // 设备初始化
+  84   1              setup();
+  85   1              IIC_init();
+  86   1              
+  87   1              for (i = 0; i < 8; ++i) {
+  88   2                      write_addr(i, i);
+  89   2                      delay_ms(1);
+  90   2              }
+  91   1              
+  92   1              adjust();
+  93   1              loop();
   94   1      }
+  95          
+  96          void Uart1() interrupt 4 using 1 {
+  97   1              if (RI) {
+  98   2                      recv_buff = SBUF;
+  99   2                      RI = 0;
+ 100   2              }
+ 101   1              if (TI) {
+ 102   2                      busy = 0;
+ 103   2                      TI = 0;
+ 104   2              }
+ 105   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    751    ----
+   CODE SIZE        =    773    ----
    CONSTANT SIZE    =     18    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
