@@ -57,8 +57,8 @@ void loop() {
 			Duang();
 			send_data(distance);
 			
-			write_addr(i<<1, distance >> 8);
-			write_addr((i<<1)+1, distance & 0xff);
+			write_addr(i<<1, distance >> 8);		delay_ms(1);
+			write_addr((i<<1)+1, distance & 0xff);	delay_ms(1);
 			++i;
 
 			step(anticlockwise);
@@ -69,8 +69,8 @@ void loop() {
 			Duang();
 			send_data(distance);
 			
-			write_addr(i<<1, distance >> 8);
-			write_addr((i<<1)+1, distance & 0xff);
+			write_addr(i<<1, distance >> 8);		delay_ms(1);
+			write_addr((i<<1)+1, distance & 0xff);	delay_ms(1);
 			--i;
 
 			step(clockwise);

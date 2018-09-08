@@ -16,16 +16,22 @@ void send_byte(uint8 byte) {
 /**
  * 发送距离或者读取存储
  */
+uint8 data_buff[direction*2];
+
 void send_data(uint16 Data) {
 	if ( SBUF == READ ) {	// 上位机请求读取存储
 		uint8 i = 0;
 		EA = 0;
-		while (i < direction) {
-			send_byte( read_addr(i<<1) );		delay_ms(1);
-			send_byte( read_addr((i<<1)+1) );	delay_ms(1);
-			++i;
+		for (i = 0; i < direction; ++i) {
+			data_buff[i<<1] = read_addr(i<<1);			delay_ms(1);
+			data_buff[(i<<1)+1] = read_addr((i<<1)+1);	delay_ms(1);
 		}
 		EA = 1;
+		delay_ms(1);
+		for (i = 0; i < direction; ++i) {
+			send_byte( data_buff[i<<1] );
+			send_byte( data_buff[(i<<1)+1] );
+		}
 	}
 	
 	do {  // 等待上位机验证
