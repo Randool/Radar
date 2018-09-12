@@ -3,15 +3,18 @@
 
 #define TIMES (2048 / direction)
 
-sbit KEY1 = P3^2;	// È·ÈÏ¼ü
-sbit KEY2 = P3^3;	// ¿ØÖÆÄæÊ±ÕëĞı×ª
-sbit KEY3 = P1^7;	// ¿ØÖÆË³Ê±ÕëĞı×ª
+/* æŒ‰é”®å¼•è„š */
+sbit KEY1 = P3^2;
+sbit KEY2 = P3^3;
+sbit KEY3 = P1^7;
 
+/* æ­¥è¿›ç”µæœºå¼•è„š */
 sbit s1 = P4^1;
 sbit s2 = P4^2;
 sbit s3 = P4^3;
 sbit s4 = P4^4;
 
+/* æ§åˆ¶æ­¥è¿›ç”µæœºæŒ‰ç…§æŒ‡å®šæ–¹å‘æ—‹è½¬ */
 void step(bit trend) {
 	uint16 i, z = TIMES;
 	if (trend == anticlockwise) {
@@ -38,8 +41,7 @@ void step(bit trend) {
 	P4 = 0;
 }
 
-// ÓÉÓÚ²½½øµç»úÎŞ·¨×Ô¶¯µ÷Õû½Ç¶È£¬
-// ĞèÒªÊÖ¶¯µ÷Õû³õÊ¼½Ç¶È
+/* åˆå§‹åŒ–è°ƒæ•´æ­¥è¿›ç”µæœºè½¬å‘ */
 void adjust() {
 	while (1) {
 		if (!KEY1) {
@@ -63,5 +65,4 @@ STEP	A	B	C	D
 	2	0	1	0	0
 	3	0	0	1	0
 	4	0	0	0	1
-Ã¿ËÍÒ»¸öÀø´ÅĞÅºÅ£¬²½½øµç»úĞı×ª5.625¡ã
 */

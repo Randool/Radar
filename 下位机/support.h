@@ -2,11 +2,11 @@
 #define SUPPORT_H
 
 /**
- * ¸Ä±äÕâĞ©ÅäÖÃ¿ÉÒÔÌáÉıËÙ¶È
+ * é…ç½®é¡¹
  */
-#define Duang_time	8	// µÆ¹âĞ§¹û¼ä¸ôÊ±¼ä
-#define direction	32	// È¡Ñù·½ÏòÊı£¬ĞèÒªÎª2µÄ±¶Êı
-#define wait_ack	5	// ·¢ËÍackµÄ¼ä¸ôÊ±¼ä
+#define Duang_time	8	// å…‰æ•ˆæŒç»­æ—¶é—´
+#define direction	32	// å–æ ·æ–¹å‘
+#define wait_ack	5	// ä¸²å£é€šä¿¡ç­‰å¾…æ—¶é—´
 
 #define clockwise     1
 #define anticlockwise 0
@@ -14,8 +14,9 @@
 typedef unsigned int uint16;
 typedef unsigned char uint8;
 
-uint8 code weixuan[] = {0, 1, 2, 3, 4, 5, 6, 7};
+sbit sLED = P2^3;		// LEDé˜³æå¼•è„š
 
+uint8 code weixuan[] = {0, 1, 2, 3, 4, 5, 6, 7};
 uint8 code duanxuan[10] = {
     0x3f, 0x06, 0x5b, 0x4f, 0x66,
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
@@ -29,7 +30,6 @@ void delay_ms(uint8 ms) {
 			while (j--);
 	}
 }
-
 void Delay25us() {
 	uint8 i;
 	_nop_();

@@ -1,18 +1,20 @@
-sbit SDA = P4^0;		  	//I2C×ÜÏßµÄÊı¾İÏß
-sbit SCL = P5^5;		  	//I2C×ÜÏßµÄÊ±ÖÓÏß
+sbit SDA = P4^0;	//I2Cæ•°æ®å‘é€çº¿
+sbit SCL = P5^5;	//I2Cæ—¶é’Ÿçº¿
 
-void delay() { 		//ÑÓÊ±4us
+void delay() {
 	;;
 }
 
-void IIC_init() {	//I2C×ÜÏß³õÊ¼»¯
+/* I2Cæ€»çº¿åˆå§‹åŒ– */
+void IIC_init() {
 	SCL=1;
 	delay();
 	SDA=1;
 	delay();
 }
 
-void start() {	 	//Ö÷»úÆô¶¯ĞÅºÅ
+/* èµ·å§‹ä¿¡å· */
+void start() {
  	SDA = 1;
 	delay();
 	SCL = 1;
@@ -21,7 +23,8 @@ void start() {	 	//Ö÷»úÆô¶¯ĞÅºÅ
 	delay();
 }
 
-void stop()	{	 	//Í£Ö¹ĞÅºÅ
+/* åœæ­¢ä¿¡å· */
+void stop()	{
  	SDA=0;
 	delay();
 	SCL=1;
@@ -30,17 +33,19 @@ void stop()	{	 	//Í£Ö¹ĞÅºÅ
 	delay();
 }
 
-void respons() {	//´Ó»úÓ¦´ğĞÅºÅ
+/* åº”ç­”ä¿¡å· */
+void respons() {
 	uint8 i=0;
 	SCL=1;
 	delay();
-	while(SDA==1 && (i<255))  //±íÊ¾ÈôÔÚÒ»¶ÎÊ±¼äÄÚÃ»ÓĞÊÕµ½´ÓÆ÷¼şµÄÓ¦´ğÔò
-		i++;				//Ö÷Æ÷¼şÄ¬ÈÏ´ÓÆÚ¼äÒÑ¾­ÊÕµ½Êı¾İ¶ø²»ÔÙµÈ´ıÓ¦´ğĞÅºÅ¡£ 
+	while(SDA==1 && (i<255))
+		i++;
 	SCL=0;
 	delay();
 }
 
-void writebyte(uint8 date) { //¶Ô24C16Ğ´Ò»¸ö×Ö½ÚÊı¾İ
+/* å†™ä¸€å­—èŠ‚æ•°æ® */
+void writebyte(uint8 date) {
 	uint8 i, temp;
 	temp=date;
 	for(i=0;i<8;i++) {
@@ -58,7 +63,8 @@ void writebyte(uint8 date) { //¶Ô24C16Ğ´Ò»¸ö×Ö½ÚÊı¾İ
 	delay();	
 }
 
-uint8 readbyte() {	//´Ó24C16¶ÁÒ»¸ö×Ö½ÚÊı¾İ
+/* è¯»ä¸€å­—èŠ‚æ•°æ® */
+uint8 readbyte() {
 	uint8 i,k;
 	SCL=0;
 	delay();
@@ -77,7 +83,8 @@ uint8 readbyte() {	//´Ó24C16¶ÁÒ»¸ö×Ö½ÚÊı¾İ
 	return k;	
 }
 
-void write_addr(uint8 addr,uint8 date) {  //¶Ô24C16µÄµØÖ·addr£¬Ğ´ÈëÒ»¸öÊı¾İdate
+/* å‘æŒ‡å®šåœ°å€å†™æ•°æ® */
+void write_addr(uint8 addr,uint8 date) {
 	start();
 	writebyte(0xa0);							
 	respons();
@@ -88,7 +95,8 @@ void write_addr(uint8 addr,uint8 date) {  //¶Ô24C16µÄµØÖ·addr£¬Ğ´ÈëÒ»¸öÊı¾İdate
 	stop();							
 }
 
-uint8 read_addr(uint8 addr) { //´Ó24C16µÄaddrµØÖ·£¬¶ÁÒ»¸ö×Ö½ÚÊı¾İ
+/* ä»æŒ‡å®šåœ°å€è¯»æ•°æ® */
+uint8 read_addr(uint8 addr) {
 	uint8 date;
 	start();
 	writebyte(0xa0);

@@ -1,16 +1,18 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import serial
 from serial.tools import list_ports
-
 
 directions = 32
 
 
-class Contral:
+class Control:
     """ 串口控制\n说明：ack为暂停……"""
 
     def __init__(self, BAUD=9600):
         self.BAUD = BAUD
         self.ACK = b"\x11"
+        self.ALIVE = b'\xee'
         self.READ = b'\x22'
         self.__port__ = None
         self.serial = None
@@ -60,10 +62,23 @@ class Contral:
     def take_out_log(self):
         """ 读取log信息 """
         self.serial.flushInput()
-        self.serial.write(b'\xee')  # 防止陷入等待状态
+        self.serial.write(self.ALIVE)  # 防止陷入等待状态
         self.serial.write(self.READ)
+        R = []
         for i in range(directions):
             a = self.serial.read(2)
             distance = (a[0] * 256 + a[1]) / 1000
-            print(f'{i+1}\t{distance}')
-        self.serial.write(b'\xee')  # 防止陷入等待状态
+            R.append(distance)
+            print(f'{i+1}\t{distance}m')
+        
+        # 绘制雷达图并保存
+        fig = plt.figure()
+        ax = fig.add_subplot(111, polar=True)
+        ax.plot(np.linspace(0, np.pi*2, directions), R)
+        ax.set_rmax(4.3)
+        ax.set_rticks([1, 2, 3, 4])
+        ax.set_rlabel_position(0)
+        ax.set_title("Rader", va='bottom')
+        fig.savefig("Rader.jpg")
+
+        self.serial.write(self.ALIVE)  # 防止陷入等待状态

@@ -1,16 +1,15 @@
-import numpy as np
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PyQt5 import QtCore, QtWidgets
 
-from contral import Contral, directions
+from contral import Control, directions, np
 
 
 step = 2 * np.pi / directions
 
 
-class RaderCanvas(Contral, FigureCanvas):
+class RaderCanvas(Control, FigureCanvas):
     """ 用于展示雷达图 """
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
@@ -43,7 +42,7 @@ class RaderCanvas(Contral, FigureCanvas):
 
     def start_measure(self, freq=60):
         """ 连接STC并启动定时器 """
-        self.serial.write(b"\xee")
+        self.serial.write(self.ALIVE)
         self.__timer__.timeout.connect(self.update_figure)
         self.__timer__.start(freq)
 
