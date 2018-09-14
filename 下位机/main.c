@@ -9,7 +9,11 @@
 #include "serial.h"
 
 
-/* 通过波特率和晶振计算定时器时间 */
+/**
+ * 通过波特率和晶振计算定时器时间
+ * SCON	0101 0000	方式1，8位UART
+ * AUXR	0100 0000	不分频
+ */
 #define FOCS 11059200L
 #define BAUD 9600
 #define TM   (65536 - FOCS/BAUD/4)
@@ -30,17 +34,17 @@ void setup() {
 	P0 = 0;
 	
 	// 超声波——定时器0
-	TMOD = 0x01;
+	TMOD = 0x01;	// 16位不可重装
 	TH0 = 0;
 	TL0 = 0;
 	
 	// 串口通信——定时器1
 	SCON |= 0x50;
+	AUXR = 0x40;	// 定时器1不分频
 	TH1 = TM >> 8;
 	TL1 = TM;
-	AUXR = 0x40;
 	TI = RI = 0;
-	TR1 = 1;
+	TR1 = 1;		// 定时器1的运行控制位
 	ES = 1;
 	
 	EA = 1;
