@@ -1,5 +1,5 @@
 # Radar
-STC51搭配PyQt5的图形化雷达视图
+STC51搭配PyQt5的图形化雷达视图。我将该项目的效果展示放在B站上，可以戳这个链接：[自己动手做一个雷达呀～](https://www.bilibili.com/video/av51775167/)
 
 
 ## 配置要求
@@ -19,8 +19,6 @@ STC51搭配PyQt5的图形化雷达视图
 ```bash
 pip install PyQt5
 pip install PyQt5-tools
-
 pip install numpy
-
 pip install matplotlib
 ```
